@@ -9,5 +9,7 @@ class MedicalFacility:
     def Request(self, bloodType, amount, facilityRequest):
         self.request.append(facilityRequest)
         raise NotImplementedError
-    
+
+    def send_blood(self, amount, listBloodBag):
+        raise NotImplementedError
 
