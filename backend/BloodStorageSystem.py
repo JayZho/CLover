@@ -1,5 +1,6 @@
 import datetime
 from datetime import date
+from Inventory import Inventory
 
 class BloodStorageSystem:
 
@@ -18,4 +19,9 @@ class BloodStorageSystem:
     def giveWarning(self):
         pass
     
-    
+    # Add incoming blood bag to inventory
+    def addIncomingBlood(self, bloodType, donor, expire, arrival, origin):
+        # TODO Parse input to check for correctness
+
+        # Adds blood to system
+        self._inventory.addIncomingBloodBag(bloodType, donor, expire, arrival, origin)

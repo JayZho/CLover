@@ -5,8 +5,8 @@ from BloodBag import BloodBag
 class BloodType:
 
 
-    def __init__(self, type, limit):
-        self._type = type
+    def __init__(self, bloodType, limit):
+        self._bloodType = bloodType
         self._quantity = 0
         self._bloodBags = []
         self._limit = limit
@@ -36,8 +36,7 @@ class BloodType:
             if(bloodBag.isExpired() == True):
                 self.removeBloodBag(bloodBag)
 
-
-
-
-
-    
+    # Creates new blood bag, adds to list
+    def addIncomingBloodBag(self, donor, expire, arrival, origin):
+        bag = BloodBag(self._bloodType, donor, expire, arrival, origin)
+        self._bloodBags.append(bag)
