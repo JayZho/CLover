@@ -8,17 +8,22 @@ class BloodStorageSystem:
     def __init__(self, inventory):
         self._medFacilities = [ MedicalFacility(A, 1, self)]
         self._inventory = inventory
-        self._lowestLevelA = 0
-        self._lowestLevelB = 0
-        self._lowestLevelO = 0
+        
         self._requestLimit = 0
+
         self._storageA = 0
         self._storageB = 0
         self._storageO = 0
+        self._lowestLevelA = 0
+        self._lowestLevelB = 0
+        self._lowestLevelO = 0
+
+        # self._bloodTypes[]
+       
 
 
     def handleRequest(self, request):
-        type = request.getType()
+        blodType = request.getType()
         amount = request.getAmount()
 
         #checking if they are requesting too much blood
@@ -65,5 +70,18 @@ class BloodStorageSystem:
     def getBloodTypes(self):
         return self._bloodTypes
 
-    def giveWarning(self):
-        pass
+    def giveWarning(self, blood):
+        print("Storage of type ", blood, " is below critical!")
+
+    #check and remove expired blood bags
+    def checkExpriedBlood(self):
+        for bloodType in self._bloodTypes:
+            bloodType.removeExpiredBlood()
+
+
+    def checkCritical(self):
+        for bloodType in self._bloodTypes:
+            if(bloodType.checkCritical):
+                self.giveWarning(bloodType.getType())
+            
+            
