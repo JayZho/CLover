@@ -1,8 +1,10 @@
 
+
 class Rquest:
 
-    def __init__(self, bloodType, location, notes)
+    def __init__(self, bloodType, amount, location, notes)
         self._type = bloodType
+        self._amount = amount
         self._location = location
         self._notes = notes
 

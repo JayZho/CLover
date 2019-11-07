@@ -1,21 +1,23 @@
 #!/bin/python
+from Request.py import Request
 
 class MedicalFacility:
     def __init__(self, name, id):
         self.name = name
         self.id = id
         self.request = []
-    
+
     def Request(self, bloodType, amount, facilityRequest):
+        request = Request(bloodType, amount, facilityRequest)
         self.request.append(facilityRequest)
-        raise NotImplementedError
+
 
     def send_blood(self, amount, listBloodBag):
         raise NotImplementedError
 
     def accept_request(self, Request):
         raise NotImplementedError
-    
+
     def get_MF_name(self):
         return self.name
 
