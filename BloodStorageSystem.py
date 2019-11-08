@@ -1,15 +1,13 @@
 import datetime
 from datetime import date
-from MedicalFacility.py import MedicalFacility
+from MedicalFacility import MedicalFacility
 from Inventory import Inventory
 
 class BloodStorageSystem:
 
 
-    def __init__(self, inventory):
-        self._medFacilities = [ MedicalFacility(A, 1, self)]
-        self._inventory = inventory
-        
+    def __init__(self):
+        self._medFacilities = []
         self._requestLimit = 0
 
         self._storageA = 0
@@ -19,9 +17,10 @@ class BloodStorageSystem:
         self._lowestLevelB = 0
         self._lowestLevelO = 0
 
-        # self._bloodTypes[]
-       
+        self._bloodTypes = []
 
+    def addMedFacility(self, medFacility):
+        self._medFacilities.append(medFacility)
 
     def handleRequest(self, request):
         blodType = request.getType()
@@ -91,3 +90,11 @@ class BloodStorageSystem:
 
         # Adds blood to system
         self._inventory.addIncomingBloodBag(bloodType, donor, expire, arrival, origin)
+        # # Creates and adds blood bag to respective blood type
+        # def addIncomingBloodBag(self, bloodType, donor, expire, arrival, origin):
+        #     # Find bloodType to add to
+        #     for bType in self._bloodTypes:
+        #         # Equals correct blood type, add blood
+        #         if bloodType == bType.getBloodTypes():
+        #             bType.addIncomingBloodBag(donor, expire, arrival, origin)
+        #             break

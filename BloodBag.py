@@ -4,12 +4,13 @@ from datetime import date
 class BloodBag:
 
 
-    def __init__(self, bloodType, donor, expire, arrival, origin):
+    def __init__(self, id, bloodType, donor, expire, arrival, origin):
+        self._id = id
         self._bloodType = bloodType
-        self._donor = donor
+        self._donor = donor #instance of donor
         self._expiryDate = expire
         self._arrivalDate = arrival
-        self._origin = origin
+        self._origin = origin #instance of medical facility
     
     def getType(self):
         return self._bloodType

@@ -1,5 +1,5 @@
 #!/bin/python
-from Request.py import Request
+from Request import Request
 
 class MedicalFacility:
     def __init__(self, name, id, system):

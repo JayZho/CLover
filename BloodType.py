@@ -5,7 +5,7 @@ from BloodBag import BloodBag
 class BloodType:
 
 
-    def __init__(self, bloodType, limit):
+    def __init__(self, bloodType, lowest):
         self._bloodType = bloodType
         self._quantity = 0
         self._bloodBags = []
