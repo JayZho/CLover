@@ -5,14 +5,14 @@ from BloodBag import BloodBag
 class BloodType:
 
 
-    def __init__(self, bloodType, limit):
+    def __init__(self, bloodType, lowest):
         self._bloodType = bloodType
         self._quantity = 0
         self._bloodBags = []
         self._critical = lowest
     
     def getType(self):
-        return self._type
+        return self._bloodType
 
     def getQuantity(self):
         return self._quantity
@@ -32,16 +32,16 @@ class BloodType:
     
     #removes all expired blood bags from '_bloodBags'
     def removeExpiredBlood(self):
+        removedBags = []
         for bloodBag in self._bloodBags:
             if(bloodBag.isExpired() == True):
+                removedBags.append(bloodBag)
                 self.removeBloodBag(bloodBag)
+        return removedBags
+
 
     def checkCritical(self):
         return (self._quantity < self._critical)
-
-
-
-
 
     
     # Creates new blood bag, adds to list
