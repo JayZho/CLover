@@ -5,8 +5,8 @@ from BloodBag import BloodBag
 class BloodType:
 
 
-    def __init__(self, type, lowest):
-        self._type = type
+    def __init__(self, bloodType, limit):
+        self._bloodType = bloodType
         self._quantity = 0
         self._bloodBags = []
         self._critical = lowest
@@ -44,3 +44,7 @@ class BloodType:
 
 
     
+    # Creates new blood bag, adds to list
+    def addIncomingBloodBag(self, donor, expire, arrival, origin):
+        bag = BloodBag(self._bloodType, donor, expire, arrival, origin)
+        self._bloodBags.append(bag)

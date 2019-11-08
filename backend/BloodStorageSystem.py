@@ -1,6 +1,7 @@
 import datetime
 from datetime import date
 from MedicalFacility.py import MedicalFacility
+from Inventory import Inventory
 
 class BloodStorageSystem:
 
@@ -83,5 +84,10 @@ class BloodStorageSystem:
         for bloodType in self._bloodTypes:
             if(bloodType.checkCritical):
                 self.giveWarning(bloodType.getType())
-            
-            
+    
+    # Add incoming blood bag to inventory
+    def addIncomingBlood(self, bloodType, donor, expire, arrival, origin):
+        # TODO Parse input to check for correctness
+
+        # Adds blood to system
+        self._inventory.addIncomingBloodBag(bloodType, donor, expire, arrival, origin)
