@@ -85,11 +85,11 @@ class BloodStorageSystem:
                 self.giveWarning(bloodType.getType())
     
     # Add incoming blood bag to inventory
-    def addIncomingBlood(self, bloodType, donor, expire, arrival, origin):
+    def addIncomingBlood(self, bloodId, bloodType, donor, expire, arrival, origin):
         # TODO Parse input to check for correctness
 
         # Adds blood to system
-        self._inventory.addIncomingBloodBag(bloodType, donor, expire, arrival, origin)
+        self._inventory.addIncomingBloodBag(bloodId, bloodType, donor, expire, arrival, origin)
         # # Creates and adds blood bag to respective blood type
         # def addIncomingBloodBag(self, bloodType, donor, expire, arrival, origin):
         #     # Find bloodType to add to

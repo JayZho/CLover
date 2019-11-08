@@ -19,16 +19,21 @@ def add_blood():
         # Check for input value errors
         error = '';
         
-        # Get items out of form
+        # Get items out of form TODO Properly extract information
         # id, bloodType, donor, expire, arrival, origin
         bloodId = request.form["bloodId"]
         bloodType = request.form["bloodType"]
-        donorId = int(request.form["donorId"])
-        
+        donor = int(request.form["donorId"])
+        expire = request.form["expire"]
+        arrival = request.form["arrival"]
+        origin = request.form["origin"]
+
+        # Input checking
 
         if error:
             # Input error occured, return error message
             return render_template('add_blood.html', complete=False, errmsg=error)
         else:
             # Input no error
+            system.addIncomingBlood(bloodId, bloodType, donor, expire, arrival, origin)
             return render_template('add_blood.html', complete=True)
