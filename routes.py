@@ -2,7 +2,6 @@ from flask import request, render_template, redirect, url_for
 from datetime import datetime
 from server import app, system
 
-app = Flask(__name__)
 currUser = None; #global variable that tracks the current user
 
 @app.route('/')
@@ -19,7 +18,13 @@ def add_blood():
         # Get information typed into page
         # Check for input value errors
         error = '';
-
+        
+        # Get items out of form
+        # id, bloodType, donor, expire, arrival, origin
+        bloodId = request.form["bloodId"]
+        bloodType = request.form["bloodType"]
+        donorId = int(request.form["donorId"])
+        
 
         if error:
             # Input error occured, return error message
