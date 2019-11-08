@@ -92,5 +92,5 @@ class BloodStorageSystem:
         for bType in self._bloodTypes:
             # Equals correct blood type, add blood
             if bloodType == bType.getBloodTypes():
-                bType.addIncomingBloodBag(donor, expire, arrival, origin)
+                bType.addIncomingBloodBag(bloodId, donor, expire, arrival, origin)
                 break
