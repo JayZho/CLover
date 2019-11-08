@@ -45,6 +45,6 @@ class BloodType:
 
     
     # Creates new blood bag, adds to list
-    def addIncomingBloodBag(self, donor, expire, arrival, origin):
-        bag = BloodBag(self._bloodType, donor, expire, arrival, origin)
+    def addIncomingBloodBag(self, bloodId, donor, expire, arrival, origin):
+        bag = BloodBag(self._bloodType, bloodId, donor, expire, arrival, origin)
         self._bloodBags.append(bag)

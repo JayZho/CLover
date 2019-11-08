@@ -89,12 +89,8 @@ class BloodStorageSystem:
         # TODO Parse input to check for correctness
 
         # Adds blood to system
-        self._inventory.addIncomingBloodBag(bloodId, bloodType, donor, expire, arrival, origin)
-        # # Creates and adds blood bag to respective blood type
-        # def addIncomingBloodBag(self, bloodType, donor, expire, arrival, origin):
-        #     # Find bloodType to add to
-        #     for bType in self._bloodTypes:
-        #         # Equals correct blood type, add blood
-        #         if bloodType == bType.getBloodTypes():
-        #             bType.addIncomingBloodBag(donor, expire, arrival, origin)
-        #             break
+        for bType in self._bloodTypes:
+            # Equals correct blood type, add blood
+            if bloodType == bType.getBloodTypes():
+                bType.addIncomingBloodBag(donor, expire, arrival, origin)
+                break
