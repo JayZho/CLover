@@ -25,8 +25,9 @@ def add_blood():
         bloodType = request.form["bloodType"]
         donor = int(request.form["donorId"])
         expire = request.form["expire"]
-        arrival = request.form["arrival"]
         origin = request.form["origin"]
+
+        arrival = datetime.now() #ARRIVAL DATE is date that it's added to the system
 
         # Input checking
 
