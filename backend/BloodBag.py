@@ -24,12 +24,13 @@ class BloodBag:
     def getOrigin(self):
         return self._origin
 
+    def getExpiryDate(self):
+        return self._expiryDate
+
     #check if the blood is expired
     def isExpired(self):
         return (self._expiryDate <= date.today())
 
-    def getSortedBags(self, start, end):
-        
 
     
     

@@ -48,3 +48,26 @@ class BloodType:
     def addIncomingBloodBag(self, donor, expire, arrival, origin):
         bag = BloodBag(self._bloodType, donor, expire, arrival, origin)
         self._bloodBags.append(bag)
+    
+    #using selection sort
+    def getSortedBags(self, start, end):
+        toSort = []
+        for bag in self._bloodBags: #grab bags in date range
+            if(start <= bag.getExpiryDate <= end):
+                toSort.append(bag)
+
+        count = len(toSort)
+        newList = []
+        earliest = end
+        while(count > 0):
+            for each in toSort:
+                if (each.getExpiryDate <= earliest):
+                    selected = each
+                    earliest = each.getExpiryDate
+            newList.append(selected)
+            count -= 1
+
+        return newList
+        
+            
+

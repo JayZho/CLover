@@ -3,6 +3,9 @@ import json
 
 app = Flask(__name__)
 
+self._user = "med"
+system = Blo
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -11,7 +14,15 @@ def index():
 @app.route('/med-inventory')
 def med_facility():
     list_a = [1, 2, 3]
-    return render_template("inventory.html", listA = list_a, numberA = 20)
+    numberA = system.getQuantity("A")
+    numberB = system.getQuantity("B")
+    numberO = system.getQuantity("O")
+    numberAB = system.getQuantity("AB")
+    if(self._user == "med"):
+        return render_template("inventory.html", numberA=numberA, numberB=numberB, numberO=numberO, numberAB=numberAB)
+    elif(self._user == "vampire"):
+        return render_template("inventory.html", listA = list_a, numberA = 20)
+
 
 
 
