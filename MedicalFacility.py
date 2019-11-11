@@ -1,5 +1,5 @@
 #!/bin/python
-from Request.py import Request
+from Request import Request
 
 class MedicalFacility:
     def __init__(self, name, id, system):
@@ -8,10 +8,11 @@ class MedicalFacility:
         self.request = []
         self.system = system
 
-    def sendRequest(self, bloodType, amount, facilityRequest):
-        request = Request(bloodType, amount, facilityRequest)
+    def sendRequest(self, bloodType, amount, id, notes):
+        request = Request(bloodType, amount, id, notes)
         self.request.append(request)
-        self.system.handleRequest(request)
+        result = self.system.handleRequest(request)
+        return result
 
     def send_blood(self, amount, listBloodBag):
         raise NotImplementedError

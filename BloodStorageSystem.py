@@ -1,16 +1,21 @@
 import datetime
 from datetime import date
-from MedicalFacility.py import MedicalFacility
+from MedicalFacility import MedicalFacility
 from Inventory import Inventory
+from flask import Flask, redirect, render_template, request, url_for, session, abort
 
 class BloodStorageSystem:
 
 
     def __init__(self, inventory):
-        self._medFacilities = [ MedicalFacility(A, 1, self)]
+        self._medFacilities = [ MedicalFacility("MF1", 1, self),
+                                MedicalFacility("MF2", 2, self),
+                                MedicalFacility("MF3", 3, self),
+                                MedicalFacility("MF4", 4, self),
+                                MedicalFacility("MF5", 5, self)]
         self._inventory = inventory
-        
-        self._requestLimit = 0
+
+        self._requestLimit = 100
 
         self._storageA = 0
         self._storageB = 0
@@ -20,16 +25,21 @@ class BloodStorageSystem:
         self._lowestLevelO = 0
 
         # self._bloodTypes[]
-       
+
 
 
     def handleRequest(self, request):
-        blodType = request.getType()
+        print("I'm here")
+        bloodType = request.getType()
         amount = request.getAmount()
 
         #checking if they are requesting too much blood
+        print(amount)
+        print(self._requestLimit)
         if amount > self._requestLimit:
-            self.requestTooMuch()
+            print("I'm requesting too much")
+            result = "error"
+            return result
 
         if type == 'A':
             amountLeft = self._storageA - amount
@@ -56,17 +66,20 @@ class BloodStorageSystem:
         toSendList = sortedBloodBags[:amount]
         #update our database
         bloodBags = sortedBloodBags[amount:]
-        
 
 
 
 
-    def requestTooMuch():
-        pass
+
+    def requestTooMuch(self):
+        return render_template('failure.html')
 
 
     def addBloodType(self, bloodType):
         self._bloodTypes.append(bloodType)
+
+    def getMFs(self):
+        return self._medFacilities
 
     def getBloodTypes(self):
         return self._bloodTypes
@@ -84,7 +97,7 @@ class BloodStorageSystem:
         for bloodType in self._bloodTypes:
             if(bloodType.checkCritical):
                 self.giveWarning(bloodType.getType())
-    
+
     # Add incoming blood bag to inventory
     def addIncomingBlood(self, bloodType, donor, expire, arrival, origin):
         # TODO Parse input to check for correctness

@@ -1,18 +1,21 @@
 
 
-class Rquest:
+class Request:
 
-    def __init__(self, bloodType, amount, location, notes)
+    def __init__(self, bloodType, amount, mfId, notes):
         self._type = bloodType
         self._amount = amount
-        self._location = location
+        self._mfId = mfId
         self._notes = notes
 
     def getType(self):
         return self._type
 
-    def getLocation(self):
-        return self._location
+    def getMfId(self):
+        return self._mfId
+
+    def getAmount(self):
+        return self._amount
 
     def getNotes(self):
         return self._notes
@@ -20,8 +23,12 @@ class Rquest:
     def setType(self, bloodType):
         self._type = bloodType
 
-    def getLocation(self, location):
-        self._location = location
+    def setAmount(self, amount):
+        self._amount = amount
 
-    def getxotes(self, notes):
-        self.notes = notes
+    def setMfId(self,mfId ):
+        self._mfId = mfId
+
+
+    def setNotes(self, notes):
+        self._notes = notes
