@@ -1,6 +1,7 @@
 import datetime
 from datetime import date
 from MedicalFacility.py import MedicalFacility
+from BloodType import BloodType
 
 class BloodStorageSystem:
 
@@ -14,11 +15,16 @@ class BloodStorageSystem:
         self._storageA = 0
         self._storageB = 0
         self._storageO = 0
+        self._storageAB = 0
         self._lowestLevelA = 0
         self._lowestLevelB = 0
         self._lowestLevelO = 0
+        self._lowestLevelAB = 0
 
-        self._typeA = BloodType()
+        self._typeA = BloodType(self, "A", self._lowestLevelA)
+        self._typeB = BloodType(self, "B", self._lowestLevelB)
+        self._typeO = BloodType(self, "O", self._lowestLevelO)
+        self._typeAB = BloodType(self, "AB", self._lowestLevelAB)
        
 
 
@@ -88,5 +94,10 @@ class BloodStorageSystem:
         for bloodType in self._bloodTypes:
             if(bloodType.checkCritical):
                 self.giveWarning(bloodType.getType())
+
+    def getListBloodType(self, BloodType, startDate, endDate):
+        if (self._typeA == BloodType):
+            return self._typeA.getSortedBags(startDate, endDate)
+        
             
             

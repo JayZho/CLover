@@ -1,6 +1,6 @@
 
 
-class Rquest:
+class Request:
 
     def __init__(self, bloodType, amount, location, notes)
         self._type = bloodType

@@ -13,7 +13,10 @@ def index():
 
 @app.route('/med-inventory')
 def med_facility():
-    list_a = [1, 2, 3]
+    list_a = system.getListBloodType("A", , )
+    list_b = system.getListBloodType("B", , )
+    list_o = system.getListBloodType("O", , )
+    list_ab = system.getListBloodType("AB", , )
     numberA = system.getQuantity("A")
     numberB = system.getQuantity("B")
     numberO = system.getQuantity("O")
