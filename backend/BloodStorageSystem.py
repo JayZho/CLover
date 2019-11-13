@@ -18,7 +18,7 @@ class BloodStorageSystem:
         self._lowestLevelB = 0
         self._lowestLevelO = 0
 
-        self._bloodTypes[]
+        self._typeA = BloodType()
        
 
 
