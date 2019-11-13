@@ -10,7 +10,7 @@ class BloodBag:
         self._donorId = donorId # int donorId
         self._expiryDate = expire # datetime date object
         self._arrivalDate = arrival # datetime date object
-        self._origin = origin #string name of origin medical facility
+        self._origin = origin #int id of medical facility
     
     def getType(self):
         return self._bloodType
@@ -31,4 +31,4 @@ class BloodBag:
     def toString(self):
         return "ID: " + str(self._id) + ", Blood Type: " + self._bloodType + \
             ", Donor ID: " + str(self._donorId) + ", Expiry Date: " + str(self._expiryDate) + \
-            ", Arrival Date: " + str(self._arrivalDate) + ", Origin: " + self._origin
+            ", Arrival Date: " + str(self._arrivalDate) + ", Origin: " + str(self._origin)

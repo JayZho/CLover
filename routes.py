@@ -41,7 +41,7 @@ def add_blood():
         bloodType = str(request.form.get("bloodType")) #drop down menu
         donor = int(request.form["donorId"]) #int id
         expire = request.form["expire"] #date input in string format
-        origin = request.form["origin"] #text, name of medical facility
+        origin = int(request.form["origin"]) #int id of medical facility
 
         arrival = datetime.now().date() #ARRIVAL DATE is date that it's added to the system
         expiry = datetime.strptime(expire, '%Y-%m-%d').date() # Convert string to datetime object
