@@ -11,8 +11,8 @@ class BloodType:
         self._bloodBags = []
         self._critical = lowest
     
-    def getType(self):
-        return self._type
+    def getBloodType(self):
+        return self._bloodType
 
     def getQuantity(self):
         return self._quantity
@@ -40,11 +40,8 @@ class BloodType:
         return (self._quantity < self._critical)
 
 
-
-
-
-    
     # Creates new blood bag, adds to list
     def addIncomingBloodBag(self, bloodId, donor, expire, arrival, origin):
         bag = BloodBag(bloodId, self._bloodType, donor, expire, arrival, origin)
+        # Add using insertion sort on dates that blood is added
         self._bloodBags.append(bag)

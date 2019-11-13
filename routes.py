@@ -1,13 +1,29 @@
-from flask import request, render_template, redirect, url_for
+from flask import request, render_template, redirect, url_for, request
 from datetime import datetime
 from server import app, system
 
 currUser = None; #global variable that tracks the current user
 
-@app.route('/')
-@app.route('/index')
-def index():
-    return render_template('login.html')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] == 'vampire':
+            return redirect(url_for('vampire'))
+        elif request.form['username'] == 'medical':
+            return redirect(url_for('medical'))
+        else:
+            error = 'Invalid Credentials. Please try again.'
+    return render_template('login.html', error=error)
+
+@app.route('/vampire_employee')
+def vampire():
+    return render_template('vampire_employee.html')
+
+@app.route('/medical_facility')
+def medical():
+    return render_template('medical_facility.html')
 
 @app.route('/add_blood', methods=['GET', 'POST'])
 def add_blood():
@@ -30,6 +46,8 @@ def add_blood():
         arrival = datetime.now() #ARRIVAL DATE is date that it's added to the system
 
         # Input checking
+        # Expiry date is before current date
+        error = "Invalid blood details - expiry date is before current date."
 
         if error:
             # Input error occured, return error message

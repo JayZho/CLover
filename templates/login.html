@@ -10,15 +10,19 @@
 
     <!-- Icon -->
     <div class="fadeIn first">
-      <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />
+      <h1>Vampire Co.</h1>
+      <!--<img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />-->
     </div>
 
     <!-- Login Form -->
-    <form>
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
-      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-      <input type="submit" class="fadeIn fourth" value="Log In">
+    <form action="" method="post">
+      <input type="text" id="id" class="fadeIn second" name="username" placeholder="Username" value="{{ request.form.username }}">
+      <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password" value="{{ request.form.password }}">
+      <input type="submit" class="fadeIn fourth" value="LogIn">
     </form>
+    {% if error %}
+      <p class="error"><strong>Error:</strong> {{ error }}
+    {% endif %}
 
     <!-- Remind Passowrd -->
     <div id="formFooter">

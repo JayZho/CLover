@@ -1,7 +1,6 @@
 import datetime
 from datetime import date
 from MedicalFacility import MedicalFacility
-from Inventory import Inventory
 
 class BloodStorageSystem:
 
@@ -56,10 +55,6 @@ class BloodStorageSystem:
         #update our database
         bloodBags = sortedBloodBags[amount:]
         
-
-
-
-
     def requestTooMuch():
         pass
 
@@ -74,7 +69,7 @@ class BloodStorageSystem:
         print("Storage of type ", blood, " is below critical!")
 
     #check and remove expired blood bags
-    def checkExpriedBlood(self):
+    def checkExpiredBlood(self):
         for bloodType in self._bloodTypes:
             bloodType.removeExpiredBlood()
 
@@ -87,10 +82,10 @@ class BloodStorageSystem:
     # Add incoming blood bag to inventory
     def addIncomingBlood(self, bloodId, bloodType, donor, expire, arrival, origin):
         # TODO Parse input to check for correctness
-
+        
         # Adds blood to system
         for bType in self._bloodTypes:
             # Equals correct blood type, add blood
-            if bloodType == bType.getBloodTypes():
+            if bloodType == bType.getBloodType():
                 bType.addIncomingBloodBag(bloodId, donor, expire, arrival, origin)
                 break

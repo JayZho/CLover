@@ -3,7 +3,6 @@ from BloodStorageSystem import BloodStorageSystem
 from BloodType import BloodType
 from BloodBag import BloodBag
 from MedicalFacility import MedicalFacility
-from Donor import Donor
 from datetime import datetime
 
 # Flask application
@@ -14,9 +13,9 @@ system = BloodStorageSystem()
 
 # Load in medical facilities
 med1 = MedicalFacility("Medical Facility", 1, system)
-system.addMedFacility()
+system.addMedFacility(med1)
 med2 = MedicalFacility("Medical Facility Facility", 2, system)
-system.addMedFacility()
+system.addMedFacility(med2)
 
 # Load in blood types and limit amounts
 typeA = BloodType("A", 5)
