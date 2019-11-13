@@ -98,14 +98,14 @@ class BloodStorageSystem:
     def getListBloodType(self, BloodType, startDate, endDate):
         if (self._typeA == BloodType):
             return self._typeA.getSortedBags(startDate, endDate)
-        elif self._typeB == BloodType):
+        elif (self._typeB == BloodType):
             return self._typeB.getSortedBags(startDate, endDate)
-        elif self._typeO == BloodType):
+        elif (self._typeO == BloodType):
             return self._typeO.getSortedBags(startDate, endDate)
-        elif self._typeAB == BloodType):
+        elif (self._typeAB == BloodType):
             return self._typeAB.getSortedBags(startDate, endDate)
         else:
-            return null
+            return
         
             
             
