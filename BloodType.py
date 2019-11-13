@@ -45,3 +45,4 @@ class BloodType:
         bag = BloodBag(bloodId, self._bloodType, donor, expire, arrival, origin)
         # Add using insertion sort on dates that blood is added
         self._bloodBags.append(bag)
+        return bag

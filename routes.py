@@ -37,22 +37,25 @@ def add_blood():
         
         # Get items out of form TODO Properly extract information
         # id, bloodType, donor, expire, arrival, origin
-        bloodId = request.form["bloodId"]
-        bloodType = request.form["bloodType"]
-        donor = int(request.form["donorId"])
-        expire = request.form["expire"]
-        origin = request.form["origin"]
+        bloodId = request.form["bloodId"] # int input
+        bloodType = str(request.form.get("bloodType")) #drop down menu
+        donor = int(request.form["donorId"]) #int id
+        expire = request.form["expire"] #date input in string format
+        origin = request.form["origin"] #text, name of medical facility
 
-        arrival = datetime.now() #ARRIVAL DATE is date that it's added to the system
+        arrival = datetime.now().date() #ARRIVAL DATE is date that it's added to the system
+        expiry = datetime.strptime(expire, '%Y-%m-%d').date() # Convert string to datetime object
 
         # Input checking
         # Expiry date is before current date
-        error = "Invalid blood details - expiry date is before current date."
+        if expiry < arrival:
+            error = "Invalid blood details - expiry date is before current date."
 
         if error:
             # Input error occured, return error message
             return render_template('add_blood.html', complete=False, errmsg=error)
         else:
             # Input no error
-            system.addIncomingBlood(bloodId, bloodType, donor, expire, arrival, origin)
+            bloodBag = system.addIncomingBlood(bloodId, bloodType, donor, expire, arrival, origin)
+            print(bloodBag.toString())
             return render_template('add_blood.html', complete=True)
