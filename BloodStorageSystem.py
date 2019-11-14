@@ -1,7 +1,8 @@
 import datetime
 from datetime import date
 from MedicalFacility.py import MedicalFacility
-from Inventory import Inventory
+#from Inventory import Inventory
+from BloodType import BloodType
 
 class BloodStorageSystem:
 
@@ -18,8 +19,8 @@ class BloodStorageSystem:
         self._lowestLevelA = 0
         self._lowestLevelB = 0
         self._lowestLevelO = 0
-
-        # self._bloodTypes[]
+        self._bloodTypes[]
+        #self._bloodTypes[]
        
 
 
@@ -91,3 +92,8 @@ class BloodStorageSystem:
 
         # Adds blood to system
         self._inventory.addIncomingBloodBag(bloodType, donor, expire, arrival, origin)
+
+    # Show the amount of blood within storage
+    def showStorageBlood(self, startDate, endDate):
+        for bloodBags in self.getBloodTypes:
+            if ((startDate < bloodBags.expire) && (endDate < bloodBags.expire)):
