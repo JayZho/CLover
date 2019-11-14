@@ -22,12 +22,17 @@ class BloodStorageSystem:
         self._medFacilities.append(medFacility)
 
     def handleRequest(self, request):
-        blodType = request.getType()
+        print("I'm here")
+        bloodType = request.getType()
         amount = request.getAmount()
 
         #checking if they are requesting too much blood
+        print(amount)
+        print(self._requestLimit)
         if amount > self._requestLimit:
-            self.requestTooMuch()
+            print("I'm requesting too much")
+            result = "error"
+            return result
 
         if type == 'A':
             amountLeft = self._storageA - amount
@@ -54,13 +59,20 @@ class BloodStorageSystem:
         toSendList = sortedBloodBags[:amount]
         #update our database
         bloodBags = sortedBloodBags[amount:]
-        
-    def requestTooMuch():
-        pass
+
+
+
+
+
+    def requestTooMuch(self):
+        return render_template('failure.html')
 
 
     def addBloodType(self, bloodType):
         self._bloodTypes.append(bloodType)
+
+    def getMFs(self):
+        return self._medFacilities
 
     def getBloodTypes(self):
         return self._bloodTypes
@@ -78,7 +90,7 @@ class BloodStorageSystem:
         for bloodType in self._bloodTypes:
             if(bloodType.checkCritical):
                 self.giveWarning(bloodType.getType())
-    
+
     # Add incoming blood bag to inventory
     def addIncomingBlood(self, bloodId, bloodType, donor, expire, arrival, origin):
         # TODO Parse input to check for correctness
