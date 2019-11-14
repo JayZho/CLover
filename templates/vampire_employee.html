@@ -1,3 +1,126 @@
-<h1>
-This is vampire employee
-</h1>
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 18%;
+  margin: 3%;
+  font-size: 30;
+  text-align: center;
+}
+
+.column2 {
+  float: left;
+  width: 18%;
+  margin: 3%;
+  font-size: 15;
+  text-align: center;
+}
+
+.column1 {
+  float: left;
+  width: 18%;
+  margin: 3%;
+  font-size: 18;
+  text-align: center;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+  text-align: center;
+}
+/* Style the buttons */
+.btn {
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #ddd;
+}
+
+.btn.active {
+  background-color: #666;
+  color: white;
+}
+</style>
+</head>
+<body>
+<h1 style="font-size: 55; text-align: center;">Vampire Blood Storage Overview</h1>
+
+<div>
+    <h3>Please specify an expiry date range:</h3>
+    <form action="{{url_for('vampire_employee', start = startDay, end = endDay)}}">
+    Start date: <input type="date" name="startDay">
+    End date: <input type="date" name="endDay">
+    <button type="submit">View</button>
+    </form>
+</div>
+
+
+<div class="row">
+  <div class="column" style="background-color:rgb(121, 5, 5);">
+    <h2>A</h2>
+    <h2 style="font-size: 18;">Quantity: {{numberA}} Bags</h2>
+  </div>
+  <div class="column" style="background-color:rgb(155, 9, 9);">
+    <h2>B</h2>
+    <h2 style="font-size: 18;">Quantity: {{numberB}} Bags</h2>
+  </div>
+  <div class="column" style="background-color:rgb(177, 5, 5);">
+        <h2>AB</h2>
+        <h2 style="font-size: 18;">Quantity: {{numberAB}} Bags</h2>
+  </div>
+  <div class="column" style="background-color:rgb(226, 7, 7);">
+        <h2>O</h2>
+        <h2 style="font-size: 18;">Quantity: {{numberO}} Bags</h2>
+  </div>
+</div>
+
+
+<div class="row">
+        <div class="column2">
+            <ul>
+                    {% for name in listA %}
+                    <li>{{ name }}</li>
+                    {% endfor %}
+            <ul>
+        </div>
+        <div class="column2">
+            <ul>
+                    {% for name in listB %}
+                    <li>{{ name }}</li>
+                    {% endfor %}
+            <ul>
+        </div>
+        <div class="column2">
+            <ul>
+                    {% for name in listAB %}
+                    <li>{{ name }}</li>
+                    {% endfor %}
+            <ul>
+        </div>
+        <div class="column2">
+            <ul>
+                    {% for name in listO %}
+                    <li>{{ name }}</li>
+                    {% endfor %}
+            <ul>
+        </div>
+      </div>
+
+
+
+
+</body>
+</html>

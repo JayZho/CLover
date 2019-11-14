@@ -2,7 +2,7 @@
 
 class Request:
 
-    def __init__(self, bloodType, amount, location, notes)
+    def __init__(self, bloodType, amount, location, notes):
         self._type = bloodType
         self._amount = amount
         self._location = location
@@ -20,7 +20,7 @@ class Request:
     def setType(self, bloodType):
         self._type = bloodType
 
-    def getLocation(self, location):
+    def setLocation(self, location):
         self._location = location
 
     def getxotes(self, notes):

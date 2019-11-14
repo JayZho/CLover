@@ -1,7 +1,6 @@
 import datetime
 from datetime import date
 from MedicalFacility.py import MedicalFacility
-#from Inventory import Inventory
 from BloodType import BloodType
 
 class BloodStorageSystem:
@@ -16,11 +15,16 @@ class BloodStorageSystem:
         self._storageA = 0
         self._storageB = 0
         self._storageO = 0
+        self._storageAB = 0
         self._lowestLevelA = 0
         self._lowestLevelB = 0
         self._lowestLevelO = 0
-        self._bloodTypes[]
-        #self._bloodTypes[]
+        self._lowestLevelAB = 0
+
+        self._typeA = BloodType(self, "A", self._lowestLevelA)
+        self._typeB = BloodType(self, "B", self._lowestLevelB)
+        self._typeO = BloodType(self, "O", self._lowestLevelO)
+        self._typeAB = BloodType(self, "AB", self._lowestLevelAB)
        
 
 
@@ -72,6 +76,11 @@ class BloodStorageSystem:
     def getBloodTypes(self):
         return self._bloodTypes
 
+    def getQuantity(self, bType):
+        for each in _bloodTypes:
+            if(each.getType == bType):
+                return each.getQuantity
+
     def giveWarning(self, blood):
         print("Storage of type ", blood, " is below critical!")
 
@@ -85,15 +94,10 @@ class BloodStorageSystem:
         for bloodType in self._bloodTypes:
             if(bloodType.checkCritical):
                 self.giveWarning(bloodType.getType())
-    
-    # Add incoming blood bag to inventory
-    def addIncomingBlood(self, bloodType, donor, expire, arrival, origin):
-        # TODO Parse input to check for correctness
 
-        # Adds blood to system
-        self._inventory.addIncomingBloodBag(bloodType, donor, expire, arrival, origin)
-
-    # Show the amount of blood within storage
-    def showStorageBlood(self, startDate, endDate):
-        for bloodBags in self.getBloodTypes:
-            if ((startDate < bloodBags.expire) && (endDate < bloodBags.expire)):
+    def getListBloodType(self, BloodType, startDate, endDate):
+        if (self._typeA == BloodType):
+            return self._typeA.getSortedBags(startDate, endDate)
+        
+            
+            

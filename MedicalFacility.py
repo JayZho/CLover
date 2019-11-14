@@ -1,5 +1,5 @@
 #!/bin/python
-from Request.py import Request
+from Request import Request
 
 class MedicalFacility:
     def __init__(self, name, id, system):
@@ -9,7 +9,7 @@ class MedicalFacility:
         self.system = system
 
     def sendRequest(self, bloodType, amount, facilityRequest):
-        request = Request(bloodType, amount, facilityRequest)
+        self.request = Request(bloodType, amount, facilityRequest)
         self.request.append(request)
         self.system.handleRequest(request)
 
