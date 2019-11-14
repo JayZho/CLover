@@ -1,21 +1,13 @@
 import datetime
 from datetime import date
 from MedicalFacility import MedicalFacility
-from Inventory import Inventory
-from flask import Flask, redirect, render_template, request, url_for, session, abort
 
 class BloodStorageSystem:
 
 
-    def __init__(self, inventory):
-        self._medFacilities = [ MedicalFacility("MF1", 1, self),
-                                MedicalFacility("MF2", 2, self),
-                                MedicalFacility("MF3", 3, self),
-                                MedicalFacility("MF4", 4, self),
-                                MedicalFacility("MF5", 5, self)]
-        self._inventory = inventory
-
-        self._requestLimit = 100
+    def __init__(self):
+        self._medFacilities = []
+        self._requestLimit = 0
 
         self._storageA = 0
         self._storageB = 0
@@ -24,9 +16,10 @@ class BloodStorageSystem:
         self._lowestLevelB = 0
         self._lowestLevelO = 0
 
-        # self._bloodTypes[]
+        self._bloodTypes = []
 
-
+    def addMedFacility(self, medFacility):
+        self._medFacilities.append(medFacility)
 
     def handleRequest(self, request):
         print("I'm here")
@@ -88,7 +81,7 @@ class BloodStorageSystem:
         print("Storage of type ", blood, " is below critical!")
 
     #check and remove expired blood bags
-    def checkExpriedBlood(self):
+    def checkExpiredBlood(self):
         for bloodType in self._bloodTypes:
             bloodType.removeExpiredBlood()
 
@@ -99,8 +92,14 @@ class BloodStorageSystem:
                 self.giveWarning(bloodType.getType())
 
     # Add incoming blood bag to inventory
-    def addIncomingBlood(self, bloodType, donor, expire, arrival, origin):
+    def addIncomingBlood(self, bloodId, bloodType, donor, expire, arrival, origin):
         # TODO Parse input to check for correctness
+        bloodBag = None
 
         # Adds blood to system
-        self._inventory.addIncomingBloodBag(bloodType, donor, expire, arrival, origin)
+        for bType in self._bloodTypes:
+            # Equals correct blood type, add blood
+            if bloodType == bType.getBloodType():
+                bloodBag = bType.addIncomingBloodBag(bloodId, donor, expire, arrival, origin)
+                break
+        return bloodBag

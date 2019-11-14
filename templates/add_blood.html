@@ -53,6 +53,16 @@
 		<h1 class="display-4 text-center login_head"> Add Blood Bag </h1>
 	</head>
 	<body class="text-center">
+        <h4 style="color: blue;">
+        {% if complete %}
+            Valid blood details, added successfully.
+        {% else %}
+            {% if errmsg %}
+                Please try again!<br>
+                {{errmsg}}
+            {% endif %}
+        {% endif %}
+        </h4>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -64,9 +74,18 @@
                 <label for="bloodId">Blood ID:</label>
                 <input type="number" class="form-control" size="50" name="bloodId" id="bloodId" placeholder="Blood Bag ID" required>
             </div>
-            <div class="form-group text-center">
+            <!-- <div class="form-group text-center">
                 <label for="bloodType">Blood Type:</label>
                 <input type="text" class="form-control" size="50" name="bloodType" id="bloodType" placeholder="Blood Type" required>
+            </div> -->
+            <div class="form-group text-center">
+                <label for="bloodType">Blood Type:</label>
+                <select class="form-control" id="bloodType" name="bloodType">
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="O">O</option>
+                    <option value="AB">AB</option>
+                </select>
             </div>
             <div class="form-group text-center">
                 <label for="donorId">Donor ID:</label>
@@ -81,20 +100,14 @@
                 <input type="date" class="form-control" size="50" name="arrival" id="arrival" placeholder="" required>
             </div> -->
             <div class="form-group text-center">
-                <label for="origin">Origin Medical Facility:</label>
-                <input type="text" class="form-control" size="50" name="origin" id="origin"placeholder="Origin Medical Facility" required>
+                <label for="origin">Origin Medical Facility ID:</label>
+                <input type="number" class="form-control" size="50" name="origin" id="origin"placeholder="Origin Medical Facility" required>
             </div>
             </br>
             <div class="form-group">
                 <input type=submit class="btn btn-primary" value=Add>
             </div>
         </form>
-
-        <h4>
-        {% if error %}
-            Invalid blood details, please try again!</br>
-        {% endif %}
-        </h4>
         </div>
 	</body>
     <div class="footer bg-dark">
