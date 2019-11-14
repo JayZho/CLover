@@ -48,7 +48,6 @@ class BloodStorageSystem:
         if (bloodType.getQuantity() - amount) < bloodType.getCritical():
             amount = bloodType.getQuantity() - bloodType.getCritical()
 
-
         #read csv file or use a list of blood
         bloodBags = bloodType.getBloodBags()
         #sort the blood bags based on expiry dates
@@ -58,7 +57,23 @@ class BloodStorageSystem:
         toSendList = sortedBloodBags[:amount]
         #update our database
         bloodType.setBloodBags(sortedBloodBags[amount:])
+       
 
+    def getAllBags(self, whichType):
+        for eachType in self._bloodTypes:
+            if eachType.getBloodType() == whichType:
+                return eachType.getBloodBags()
+
+    def getSortedBags(self, start, end, whichType):
+        for eachType in self._bloodTypes:
+            if eachType.getBloodType() == whichType:
+                return eachType.getSortedBags(start, end)
+
+
+    def getQuantity(self, whichType):
+        for eachType in self._bloodTypes:
+            if eachType.getBloodType() == whichType:
+                return eachType.getQuantity()
 
 
     def bubbleSort(self, bloodBags):
