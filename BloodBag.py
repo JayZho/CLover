@@ -11,12 +11,15 @@ class BloodBag:
         self._expiryDate = expire # datetime date object
         self._arrivalDate = arrival # datetime date object
         self._origin = origin #int id of medical facility
-    
+
     def getType(self):
         return self._bloodType
-    
+
     def getDonor(self):
         return self._donor
+
+    def getExpiryDate(self):
+        return self._expiryDate
 
     def getArrivalDate(self):
         return self._arrivalDate

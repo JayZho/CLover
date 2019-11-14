@@ -10,12 +10,22 @@ class BloodType:
         self._quantity = 0
         self._bloodBags = []
         self._critical = lowest
-    
+
     def getBloodType(self):
         return self._bloodType
 
+    def getBloodBags(self):
+        return self._bloodBags
+
     def getQuantity(self):
         return self._quantity
+
+    def getCritical(self):
+        return self._critical
+
+    def setBloodBags(self, bloodBags):
+        self._bloodBags = bloodBags
+        self._quantity = len(bloodBags)
 
 
     #takes in a BloodBag instance
@@ -29,7 +39,7 @@ class BloodType:
     def addBloodBag(self, bag):
         self._bloodBags.append(bag)
         self._quantity += 1
-    
+
     #removes all expired blood bags from '_bloodBags'
     def removeExpiredBlood(self):
         for bloodBag in self._bloodBags:

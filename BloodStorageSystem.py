@@ -7,7 +7,7 @@ class BloodStorageSystem:
 
     def __init__(self):
         self._medFacilities = []
-        self._requestLimit = 0
+        self._requestLimit = 100
 
         self._storageA = 0
         self._storageB = 0
@@ -22,47 +22,58 @@ class BloodStorageSystem:
         self._medFacilities.append(medFacility)
 
     def handleRequest(self, request):
-        print("I'm here")
-        bloodType = request.getType()
+        type = request.getType()
         amount = request.getAmount()
 
         #checking if they are requesting too much blood
-        print(amount)
-        print(self._requestLimit)
-        if amount > self._requestLimit:
-            print("I'm requesting too much")
+
+        if type == 'A':
+            bloodType = self._bloodTypes[0]
+
+        elif type == 'B':
+            bloodType = self._bloodTypes[1]
+
+        elif type == 'AB':
+            bloodType = self._bloodTypes[2]
+
+        elif type == 'O':
+            bloodType = self._bloodTypes[3]
+
+
+        if amount < 0 or amount > self._requestLimit :
+            print("request rejected")
             result = "error"
             return result
 
-        if type == 'A':
-            amountLeft = self._storageA - amount
-            if amountLeft < self._lowestLevelA:
-                amount = self._storageA - self._lowestLevelA
-
-        elif type == 'B':
-            amountLeft = self._storageB - amount
-            if amountLeft < self._lowestLevelB:
-                amount = self._storageB - self._lowestLevelB
-
-        elif type == 'O':
-            amountLeft = self._storageO - amount
-            if amountLeft < self._lowestLevelO:
-                amount = self._storageO - self._lowestLevelO
+        if (bloodType.getQuantity() - amount) < bloodType.getCritical():
+            amount = bloodType.getQuantity() - bloodType.getCritical()
 
 
         #read csv file or use a list of blood
-        bloodBags = []
+        bloodBags = bloodType.getBloodBags()
         #sort the blood bags based on expiry dates
         #implement the sort algorithm instead of using the sort function
-        sortedBloodBags = sort(bloodBags)
+        sortedBloodBags = self.bubbleSort(bloodBags)
         #suppose we want to remove 10 bags
         toSendList = sortedBloodBags[:amount]
         #update our database
-        bloodBags = sortedBloodBags[amount:]
+        bloodType.setBloodBags(sortedBloodBags[amount:])
 
 
 
+    def bubbleSort(self, bloodBags):
+        i = len(bloodBags) - 1
+        while (i > 0):
+            j = 0
+            while ( j < i):
+                if (bloodBags[j].getExpiryDate() > bloodBags[j+1].getExpiryDate()):
+                    temporary = bloodBags[j]
+                    bloodBags[j] = bloodBags[j+1]
+                    bloodBags[j+1] = temporary
+                j += 1
+            i -= 1
 
+        return bloodBags
 
     def requestTooMuch(self):
         return render_template('failure.html')
