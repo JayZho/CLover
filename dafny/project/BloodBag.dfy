@@ -1,7 +1,7 @@
 module BB {
     class BloodBag
     {
-
+        ghost var footprint: set<object>;
         var id: int;
         var bloodType: string;
         var donorId: int;
@@ -9,8 +9,9 @@ module BB {
         var arrivalDate: string;
         
         predicate ValidBB()
-        reads this
+        reads this, footprint
         {
+            this in footprint &&
             id >= 0 &&
             donorId >= 0 &&
             (bloodType == "A" || bloodType == "B" || bloodType == "O")
@@ -20,8 +21,9 @@ module BB {
         requires newId >= 0
         requires newDonorId >= 0
         requires newBloodType == "A" || newBloodType == "B" || newBloodType == "O"
+        ensures fresh(footprint - old(footprint))
         ensures ValidBB()
-        modifies this
+        modifies this, footprint
         {
             id := newId;
             bloodType := newBloodType;
