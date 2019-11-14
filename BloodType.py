@@ -18,6 +18,9 @@ class BloodType:
     def getQuantity(self):
         return self._quantity
 
+    def getBloodBags(self):
+        return self._bloodBags
+
 
     #takes in a BloodBag instance
     #remove from '_bloodBags'
@@ -48,7 +51,7 @@ class BloodType:
     def getSortedBags(self, start, end):
         toSort = []
         for bag in self._bloodBags: #grab bags in date range
-            if(start <= bag.getExpiryDate <= end):
+            if(start <= bag.getExpiryDate() <= end):
                 toSort.append(bag)
 
         count = len(toSort)
@@ -56,9 +59,9 @@ class BloodType:
         earliest = end
         while(count > 0):
             for each in toSort:
-                if (each.getExpiryDate <= earliest):
+                if (each.getExpiryDate() <= earliest):
                     selected = each
-                    earliest = each.getExpiryDate
+                    earliest = each.getExpiryDate()
             newList.append(selected)
             count -= 1
 
@@ -67,6 +70,6 @@ class BloodType:
     # Creates new blood bag, adds to list
     def addIncomingBloodBag(self, bloodId, donor, expire, arrival, origin):
         bag = BloodBag(bloodId, self._bloodType, donor, expire, arrival, origin)
-        addBloodBag(bag)
+        self.addBloodBag(bag)
         return bag
 

@@ -1,40 +1,38 @@
 import datetime
 from datetime import date
-from MedicalFacility.py import MedicalFacility
-from BloodType import BloodType
+from MedicalFacility import MedicalFacility
 
 class BloodStorageSystem:
 
 
-    def __init__(self, inventory):
-        self._medFacilities = [ MedicalFacility(A, 1, self)]
-        self._inventory = inventory
-        
+    def __init__(self):
+        self._medFacilities = []
         self._requestLimit = 0
 
         self._storageA = 0
         self._storageB = 0
         self._storageO = 0
-        self._storageAB = 0
         self._lowestLevelA = 0
         self._lowestLevelB = 0
         self._lowestLevelO = 0
-        self._lowestLevelAB = 0
 
-        self._typeA = BloodType(self, "A", self._lowestLevelA)
-        self._typeB = BloodType(self, "B", self._lowestLevelB)
-        self._typeO = BloodType(self, "O", self._lowestLevelO)
-        self._typeAB = BloodType(self, "AB", self._lowestLevelAB)
-       
+        self._bloodTypes = []
 
+    def addMedFacility(self, medFacility):
+        self._medFacilities.append(medFacility)
 
     def handleRequest(self, request):
-        blodType = request.getType()
+        print("I'm here")
+        bloodType = request.getType()
         amount = request.getAmount()
 
         #checking if they are requesting too much blood
+        print(amount)
+        print(self._requestLimit)
         if amount > self._requestLimit:
-            self.requestTooMuch()
+            print("I'm requesting too much")
+            result = "error"
+            return result
 
         if type == 'A':
             amountLeft = self._storageA - amount
@@ -61,31 +59,42 @@ class BloodStorageSystem:
         toSendList = sortedBloodBags[:amount]
         #update our database
         bloodBags = sortedBloodBags[amount:]
-        
+
+    def getAllBags(self, whichType):
+        for eachType in self._bloodTypes:
+            if eachType.getBloodType() == whichType:
+                return eachType.getBloodBags()
+
+    def getSortedBags(self, start, end, whichType):
+        for eachType in self._bloodTypes:
+            if eachType.getBloodType() == whichType:
+                return eachType.getSortedBags(start, end)
 
 
+    def getQuantity(self, whichType):
+        for eachType in self._bloodTypes:
+            if eachType.getBloodType() == whichType:
+                return eachType.getQuantity()
 
 
-    def requestTooMuch():
-        pass
+    def requestTooMuch(self):
+        return render_template('failure.html')
 
 
     def addBloodType(self, bloodType):
         self._bloodTypes.append(bloodType)
 
+    def getMFs(self):
+        return self._medFacilities
+
     def getBloodTypes(self):
         return self._bloodTypes
-
-    def getQuantity(self, bType):
-        for each in _bloodTypes:
-            if(each.getType == bType):
-                return each.getQuantity
 
     def giveWarning(self, blood):
         print("Storage of type ", blood, " is below critical!")
 
     #check and remove expired blood bags
-    def checkExpriedBlood(self):
+    def checkExpiredBlood(self):
         for bloodType in self._bloodTypes:
             bloodType.removeExpiredBlood()
 
@@ -95,9 +104,15 @@ class BloodStorageSystem:
             if(bloodType.checkCritical):
                 self.giveWarning(bloodType.getType())
 
-    def getListBloodType(self, BloodType, startDate, endDate):
-        if (self._typeA == BloodType):
-            return self._typeA.getSortedBags(startDate, endDate)
-        
-            
-            
+    # Add incoming blood bag to inventory
+    def addIncomingBlood(self, bloodId, bloodType, donor, expire, arrival, origin):
+        # TODO Parse input to check for correctness
+        bloodBag = None
+
+        # Adds blood to system
+        for bType in self._bloodTypes:
+            # Equals correct blood type, add blood
+            if bloodType == bType.getBloodType():
+                bloodBag = bType.addIncomingBloodBag(bloodId, donor, expire, arrival, origin)
+                break
+        return bloodBag

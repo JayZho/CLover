@@ -14,16 +14,26 @@ def index():
     return "Hello"
 
 
-@app.route('/vampire_employee')
-def vampire(start, end):
-    #converting strings to datetime objects
-    startDate = datetime.strptime(start, "%d/%m/%Y")
-    endDate = datetime.strptime(end, "%d/%m/%Y")
+@app.route('/vampire_employee', methods=["GET", "POST"])
+def vampire(start = 1, end = 1):
+    if request.method == 'GET':
+        list_a = system.getAllBags("A")
+        list_b = system.getAllBags("B")
+        list_o = system.getAllBags("O")
+        list_ab = system.getAllBags("AB")
+    elif request.method == 'POST':
+        #converting strings to datetime objects
+        startDay = request.form["startDay"]
+        endDay = request.form["endDay"]
+        startDate = datetime.strptime(startDay, '%Y-%m-%d').date()
+        endDate = datetime.strptime(endDay, '%Y-%m-%d').date()
 
-    list_a = system.getListBloodType("A", startDate, endDate)
-    list_b = system.getListBloodType("B", startDate, endDate)
-    list_o = system.getListBloodType("O", startDate, endDate)
-    list_ab = system.getListBloodType("AB", startDate, endDate)
+        list_a = system.getSortedBags(startDate, endDate, "A")
+        list_b = system.getSortedBags(startDate, endDate, "B")
+        list_o = system.getSortedBags(startDate, endDate, "O")
+        list_ab = system.getSortedBags(startDate, endDate, "AB")
+   
+    
     numberA = system.getQuantity("A")
     numberB = system.getQuantity("B")
     numberO = system.getQuantity("O")
@@ -38,6 +48,7 @@ def medical():
     numberB = system.getQuantity("B")
     numberO = system.getQuantity("O")
     numberAB = system.getQuantity("AB")
+    print(numberA, numberAB)
     return render_template('medical_facility.html', numberA=numberA, numberB=numberB, numberO=numberO, numberAB=numberAB)
 
 

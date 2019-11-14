@@ -28,6 +28,9 @@ class BloodBag:
     def isExpired(self):
         return (self._expiryDate <= date.today())
 
+    def getExpiryDate(self):
+        return self._expiryDate
+
     def toString(self):
         return "ID: " + str(self._id) + ", Blood Type: " + self._bloodType + \
             ", Donor ID: " + str(self._donorId) + ", Expiry Date: " + str(self._expiryDate) + \

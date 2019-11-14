@@ -60,9 +60,9 @@
 
 <div>
     <h3>Please specify an expiry date range:</h3>
-    <form action="{{url_for('vampire_employee', start = startDay, end = endDay)}}">
-    Start date: <input type="date" name="startDay">
-    End date: <input type="date" name="endDay">
+    <form method="POST">
+    Start date: <input type="date" name="startDay" id="startDate" required>
+    End date: <input type="date" name="endDay" id="endDate" required>
     <button type="submit">View</button>
     </form>
 </div>
@@ -92,28 +92,28 @@
         <div class="column2">
             <ul>
                     {% for name in listA %}
-                    <li>{{ name }}</li>
+                    <li>{{ name.toString() }}</li>
                     {% endfor %}
             <ul>
         </div>
         <div class="column2">
             <ul>
                     {% for name in listB %}
-                    <li>{{ name }}</li>
+                    <li>{{ name.toString() }}</li>
                     {% endfor %}
             <ul>
         </div>
         <div class="column2">
             <ul>
                     {% for name in listAB %}
-                    <li>{{ name }}</li>
+                    <li>{{ name.toString() }}</li>
                     {% endfor %}
             <ul>
         </div>
         <div class="column2">
             <ul>
                     {% for name in listO %}
-                    <li>{{ name }}</li>
+                    <li>{{ name.toString() }}</li>
                     {% endfor %}
             <ul>
         </div>
