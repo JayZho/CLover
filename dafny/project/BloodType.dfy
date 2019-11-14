@@ -6,10 +6,10 @@ module BT {
         var bloodType: string;
         var lowest: int;
         var quantity: int;
-        var listOfBloodBags: array<bloodBags>;
+        var listOfBloodBags: BloodBags;
 
         predicate ValidBT()
-        reads this
+        reads this, BloodBags
         {
             lowest >= 0 &&
             quantity >= 0 &&
@@ -18,8 +18,11 @@ module BT {
 
         constructor(bloodtype: string, critical: int)
         ensures ValidBT()
-        modifies this
+        ensures fresh(listOfBloodBags)
+        modifies this, BloodBags
         {
+            var temp1 := new BloodBags;
+            
             bloodType := bloodtype;
             lowest := critical;
             //listOfBloodBags := array<A> := new A[10];
