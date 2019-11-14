@@ -1,8 +1,56 @@
+
 from flask import request, render_template, redirect, url_for, request
 from datetime import datetime
 from server import app, system
 
+
 currUser = None; #global variable that tracks the current user
+
+
+
+@app.route('/')
+@app.route('/index')
+def index():
+    return "Hello"
+
+
+@app.route('/vampire_employee', methods=["GET", "POST"])
+def vampire(start = 1, end = 1):
+    if request.method == 'GET':
+        list_a = system.getAllBags("A")
+        list_b = system.getAllBags("B")
+        list_o = system.getAllBags("O")
+        list_ab = system.getAllBags("AB")
+    elif request.method == 'POST':
+        #converting strings to datetime objects
+        startDay = request.form["startDay"]
+        endDay = request.form["endDay"]
+        startDate = datetime.strptime(startDay, '%Y-%m-%d').date()
+        endDate = datetime.strptime(endDay, '%Y-%m-%d').date()
+
+        list_a = system.getSortedBags(startDate, endDate, "A")
+        list_b = system.getSortedBags(startDate, endDate, "B")
+        list_o = system.getSortedBags(startDate, endDate, "O")
+        list_ab = system.getSortedBags(startDate, endDate, "AB")
+   
+    
+    numberA = system.getQuantity("A")
+    numberB = system.getQuantity("B")
+    numberO = system.getQuantity("O")
+    numberAB = system.getQuantity("AB")
+    return render_template('vampire_employee.html', numberA=numberA, numberB=numberB, numberO=numberO, numberAB=numberAB,
+                            listA = list_a, listB = list_b, listAB = list_ab, listO = list_o)
+
+
+@app.route('/medical_facility')
+def medical():
+    numberA = system.getQuantity("A")
+    numberB = system.getQuantity("B")
+    numberO = system.getQuantity("O")
+    numberAB = system.getQuantity("AB")
+    print(numberA, numberAB)
+    return render_template('medical_facility.html', numberA=numberA, numberB=numberB, numberO=numberO, numberAB=numberAB)
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
@@ -17,13 +65,7 @@ def login():
             error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
 
-@app.route('/vampire_employee')
-def vampire():
-    return render_template('vampire_employee.html')
 
-@app.route('/medical_facility')
-def medical():
-    return render_template('medical_facility.html')
 
 @app.route('/add_blood', methods=['GET', 'POST'])
 def add_blood():
