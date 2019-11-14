@@ -1,15 +1,12 @@
 import datetime
 from datetime import date
-from MedicalFacility.py import MedicalFacility
-from Inventory import Inventory
+from MedicalFacility import MedicalFacility
 
 class BloodStorageSystem:
 
 
-    def __init__(self, inventory):
-        self._medFacilities = [ MedicalFacility(A, 1, self)]
-        self._inventory = inventory
-        
+    def __init__(self):
+        self._medFacilities = []
         self._requestLimit = 0
 
         self._storageA = 0
@@ -19,9 +16,10 @@ class BloodStorageSystem:
         self._lowestLevelB = 0
         self._lowestLevelO = 0
 
-        # self._bloodTypes[]
-       
+        self._bloodTypes = []
 
+    def addMedFacility(self, medFacility):
+        self._medFacilities.append(medFacility)
 
     def handleRequest(self, request):
         blodType = request.getType()
@@ -57,10 +55,6 @@ class BloodStorageSystem:
         #update our database
         bloodBags = sortedBloodBags[amount:]
         
-
-
-
-
     def requestTooMuch():
         pass
 
@@ -75,7 +69,7 @@ class BloodStorageSystem:
         print("Storage of type ", blood, " is below critical!")
 
     #check and remove expired blood bags
-    def checkExpriedBlood(self):
+    def checkExpiredBlood(self):
         for bloodType in self._bloodTypes:
             bloodType.removeExpiredBlood()
 
@@ -86,8 +80,14 @@ class BloodStorageSystem:
                 self.giveWarning(bloodType.getType())
     
     # Add incoming blood bag to inventory
-    def addIncomingBlood(self, bloodType, donor, expire, arrival, origin):
+    def addIncomingBlood(self, bloodId, bloodType, donor, expire, arrival, origin):
         # TODO Parse input to check for correctness
+        bloodBag = None
 
         # Adds blood to system
-        self._inventory.addIncomingBloodBag(bloodType, donor, expire, arrival, origin)
+        for bType in self._bloodTypes:
+            # Equals correct blood type, add blood
+            if bloodType == bType.getBloodType():
+                bloodBag = bType.addIncomingBloodBag(bloodId, donor, expire, arrival, origin)
+                break
+        return bloodBag
