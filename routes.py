@@ -8,10 +8,6 @@ currUser = None; #global variable that tracks the current user
 
 
 
-@app.route('/')
-@app.route('/index')
-def index():
-    return "Hello"
 
 
 @app.route('/vampire_employee', methods=["GET", "POST"])
@@ -98,7 +94,7 @@ def add_blood():
             return render_template('add_blood.html', complete=False, errmsg=error)
         else:
             # Input no error
-            bloodBag = system.addIncomingBlood(bloodId, bloodType, donor, expire, arrival, origin)
+            bloodBag = system.addIncomingBlood(bloodId, bloodType, donor, expiry, arrival, origin)
             print(bloodBag.toString())
             return render_template('add_blood.html', complete=True)
 
