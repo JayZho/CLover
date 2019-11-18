@@ -4,9 +4,7 @@ from datetime import datetime
 from server import app, system
 
 
-currUser = None; #global variable that tracks the current user
-
-
+blood_history = []
 
 
 
@@ -47,16 +45,34 @@ def medical():
     print(numberA, numberAB)
     return render_template('medical_facility.html', numberA=numberA, numberB=numberB, numberO=numberO, numberAB=numberAB)
 
+@app.route('/vampire_dashboard')
+def vampire_dashboard():
+    numberA = system.getQuantity("A")
+    numberB = system.getQuantity("B")
+    numberO = system.getQuantity("O")
+    numberAB = system.getQuantity("AB")
+    return render_template('vampire_dashboard.html', numberA=numberA, numberB=numberB, numberO=numberO, numberAB=numberAB, blood_history = blood_history)
+
+@app.route('/medical_dashboard')
+def medical_dashboard():
+    numberA = system.getQuantity("A")
+    numberB = system.getQuantity("B")
+    numberO = system.getQuantity("O")
+    numberAB = system.getQuantity("AB")
+    return render_template('medical_dashboard.html', numberA=numberA, numberB=numberB, numberO=numberO, numberAB=numberAB)
+
 
 @app.route('/', methods=['GET', 'POST'])
+def main():
+    return redirect(url_for('login'))
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
         if request.form['username'] == 'vampire':
-            return redirect(url_for('vampire'))
+            return redirect(url_for('vampire_dashboard'))
         elif request.form['username'] == 'medical':
-            return redirect(url_for('medical'))
+            return redirect(url_for('medical_dashboard'))
         else:
             error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
@@ -71,7 +87,7 @@ def add_blood():
     elif request.method == 'POST':
         # Get information typed into page
         # Check for input value errors
-        error = '';
+        error = ''
         
         # Get items out of form TODO Properly extract information
         # id, bloodType, donor, expire, arrival, origin
@@ -96,6 +112,7 @@ def add_blood():
             # Input no error
             bloodBag = system.addIncomingBlood(bloodId, bloodType, donor, expiry, arrival, origin)
             print(bloodBag.toString())
+            blood_history.append('Blood bag Added! Detail: ' + bloodBag.toString())
             return render_template('add_blood.html', complete=True)
 
 @app.route('/med-inventory')
@@ -106,10 +123,17 @@ def med_facility():
 @app.route('/request_blood', methods=['GET', 'POST'])
 def request_blood():
     if request.method == 'POST':
+        status = None
         type = request.form["bloodType"]
         amount = int(request.form["amount"])
         mfId = request.form["mf"]
         notes = request.form["notes"]
+
+        if amount > 100:
+            return render_template("make_request.html", status = 'You can only request up to 100!')
+        print(mfId)
+        if int(mfId) != 1:
+            return render_template("make_request.html", status = 'Medical id is incorrect!')
 
         for mf in system.getMFs():
             if mf.get_MF_id() == int(mfId):
@@ -118,10 +142,17 @@ def request_blood():
 
         result = medicalF.sendRequest(type, amount, mfId, notes)
 
-        print(result)
         if result == "error":
-            return render_template("failure.html")
+            return render_template("make_request.html", status = result)
 
-        return render_template('success.html')
+        numberA = system.getQuantity("A")
+        numberB = system.getQuantity("B")
+        numberO = system.getQuantity("O")
+        numberAB = system.getQuantity("AB")
+
+        status = 'Medical facility ' + mfId + ' requested amout: ' + request.form["amount"] + ' of type ' + type + ' bloods. Note: ' + notes
+        blood_history.append(status)
+        print(blood_history)
+        return render_template('medical_dashboard.html', status = status, numberA=numberA, numberB=numberB, numberO=numberO, numberAB=numberAB)
 
     return render_template("make_request.html")
