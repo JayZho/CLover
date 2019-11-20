@@ -26,8 +26,8 @@ def vampire(start = 1, end = 1):
         list_b = system.getSortedBags(startDate, endDate, "B")
         list_o = system.getSortedBags(startDate, endDate, "O")
         list_ab = system.getSortedBags(startDate, endDate, "AB")
-   
-    
+
+
     numberA = system.getQuantity("A")
     numberB = system.getQuantity("B")
     numberO = system.getQuantity("O")
@@ -88,7 +88,7 @@ def add_blood():
         # Get information typed into page
         # Check for input value errors
         error = ''
-        
+
         # Get items out of form TODO Properly extract information
         # id, bloodType, donor, expire, arrival, origin
         bloodId = request.form["bloodId"] # int input
@@ -142,8 +142,11 @@ def request_blood():
 
         result = medicalF.sendRequest(type, amount, mfId, notes)
 
+        message = None
         if result == "error":
             return render_template("make_request.html", status = result)
+        elif result == "partial":
+            message = "Your request is partially fulfilled, the amount of blood storage is reduced to the critial line"
 
         numberA = system.getQuantity("A")
         numberB = system.getQuantity("B")
@@ -153,6 +156,6 @@ def request_blood():
         status = 'Medical facility ' + mfId + ' requested amout: ' + request.form["amount"] + ' of type ' + type + ' bloods. Note: ' + notes
         blood_history.append(status)
         print(blood_history)
-        return render_template('medical_dashboard.html', status = status, numberA=numberA, numberB=numberB, numberO=numberO, numberAB=numberAB)
+        return render_template('medical_dashboard.html', status = status, numberA=numberA, numberB=numberB, numberO=numberO, numberAB=numberAB, message=message)
 
     return render_template("make_request.html")

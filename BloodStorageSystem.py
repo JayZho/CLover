@@ -45,8 +45,11 @@ class BloodStorageSystem:
             result = "error"
             return result
 
+        flag = 0
         if (bloodType.getQuantity() - amount) < bloodType.getCritical():
             amount = bloodType.getQuantity() - bloodType.getCritical()
+            flag = 1
+
 
         #read csv file or use a list of blood
         bloodBags = bloodType.getBloodBags()
@@ -57,7 +60,10 @@ class BloodStorageSystem:
         toSendList = sortedBloodBags[:amount]
         #update our database
         bloodType.setBloodBags(sortedBloodBags[amount:])
-       
+
+        if flag == 1:
+            return "partial"
+
 
     def getAllBags(self, whichType):
         for eachType in self._bloodTypes:

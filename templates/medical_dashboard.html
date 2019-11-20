@@ -103,9 +103,13 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </div>
   </div>
   {% if status %}
+    {% if message %}
+    <h1><p class="status"><strong>partially fulfilled: </strong>{{ message }}</p></h1>
+    {% else %}
     <h1><p class="status"><strong>Success:</strong> {{ status }}</p></h1>
+    {% endif %}
   {% endif %}
-  
+
   <hr>
 
   <!-- End page content -->
