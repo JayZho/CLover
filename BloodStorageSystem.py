@@ -25,6 +25,7 @@ class BloodStorageSystem:
         type = request.getType()
         amount = request.getAmount()
 
+
         #checking if they are requesting too much blood
 
         if type == 'A':
@@ -39,6 +40,8 @@ class BloodStorageSystem:
         elif type == 'O':
             bloodType = self._bloodTypes[3]
 
+
+        originalQ = bloodType.getQuantity()
 
         if amount < 0 or amount > self._requestLimit :
             print("request rejected")
@@ -61,8 +64,12 @@ class BloodStorageSystem:
         #update our database
         bloodType.setBloodBags(sortedBloodBags[amount:])
 
-        if flag == 1:
+        currentQ = bloodType.getQuantity()
+        if flag == 1 and originalQ > currentQ:
             return "partial"
+
+        if flag == 1 and originalQ == currentQ:
+            return "nofulfill"
 
 
     def getAllBags(self, whichType):

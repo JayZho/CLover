@@ -146,7 +146,9 @@ def request_blood():
         if result == "error":
             return render_template("make_request.html", status = result)
         elif result == "partial":
-            message = "Your request is partially fulfilled, the amount of blood storage is reduced to the critial line"
+            message = "partially fulfill: Your request is partially fulfilled, the amount of blood storage is reduced to the critial line(5)"
+        elif result == "nofulfill":
+            message =  "no fulfill since the blood storage has reached the critial line (5)"
 
         numberA = system.getQuantity("A")
         numberB = system.getQuantity("B")
