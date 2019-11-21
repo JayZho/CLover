@@ -42,10 +42,10 @@ class BloodType:
 
     #removes all expired blood bags from '_bloodBags'
     def removeExpiredBlood(self):
-        removedBags = []
+        removedBags = 0
         for bloodBag in self._bloodBags:
             if(bloodBag.isExpired() == True):
-                removedBags.append(bloodBag)
+                removedBags += 1
                 self.removeBloodBag(bloodBag)
         return removedBags
 

@@ -117,18 +117,22 @@ class BloodStorageSystem:
         return self._bloodTypes
 
     def giveWarning(self, blood):
-        print("Storage of type ", blood, " is below critical!")
+        return ("Storage of type ", blood, " is below critical!")
 
     #check and remove expired blood bags
     def checkExpiredBlood(self):
+        types = {}
         for bloodType in self._bloodTypes:
-            bloodType.removeExpiredBlood()
-
+            number = bloodType.removeExpiredBlood()
+            types[bloodType] = number
+        return types
 
     def checkCritical(self):
+        crits = []
         for bloodType in self._bloodTypes:
-            if(bloodType.checkCritical):
-                self.giveWarning(bloodType.getType())
+            if(bloodType.checkCritical() == True):
+                crits.append(self.giveWarning(bloodType.getBloodType()))
+        return crits
 
     # Add incoming blood bag to inventory
     def addIncomingBlood(self, bloodId, bloodType, donor, expire, arrival, origin):

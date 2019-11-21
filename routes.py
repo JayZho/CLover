@@ -47,14 +47,25 @@ def medical():
 
 @app.route('/vampire_dashboard')
 def vampire_dashboard():
+    results = system.checkExpiredBlood()
+    expireMessages = []
+    for each in results.items():
+            line = "Removed {} blood bags of Type {}".format(each[1], each[0].getBloodType())
+            expireMessages.append(line)
+
+    warnings = system.checkCritical()
+    if(len(warnings) == 0): warnings.append("No blood type is below critical storage level.")
+
     numberA = system.getQuantity("A")
     numberB = system.getQuantity("B")
     numberO = system.getQuantity("O")
     numberAB = system.getQuantity("AB")
-    return render_template('vampire_dashboard.html', numberA=numberA, numberB=numberB, numberO=numberO, numberAB=numberAB, blood_history = blood_history)
+    return render_template('vampire_dashboard.html', criticalTypes=warnings, removeMessages=expireMessages, numberA=numberA, numberB=numberB, numberO=numberO, numberAB=numberAB, blood_history = blood_history)
 
 @app.route('/medical_dashboard')
 def medical_dashboard():
+    system.checkExpiredBlood() # not displaying the results to med-employees, only calling remove method
+
     numberA = system.getQuantity("A")
     numberB = system.getQuantity("B")
     numberO = system.getQuantity("O")
