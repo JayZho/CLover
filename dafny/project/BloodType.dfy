@@ -8,29 +8,41 @@ class BloodType
     var bloodType: string;
     var lowest: int;
     var quantity: int;
-    var a : array<BloodBags<int, string>>
-    //ghost var shadow: seq<Data>;
+    var list : array<BloodBags<int, string>>
+    var first: int, last: int; // indexes in list[]
+    ghost var shadow: seq<BloodBags<int, string>>;
+
+    predicate ValidSort()
+    reads this, list
+    {
+        list!=null && list.Length!=0 && 0<=first<=last<=list.Length && shadow==list[first..last] 
+    }
 
     predicate ValidBT()
-    reads this
+    reads this, list
     {
         this in footprint &&
         lowest >= 0 &&
         quantity >= 0 &&
         (bloodType == "A" || bloodType == "B" || bloodType == "O" || bloodType == "AB") &&
-        a != null
+        list != null
     }
     
-    constructor(bloodtype: string, critical: int)
+    constructor(bloodtype: string, critical: int, size: int)
     requires critical >= 0 
     requires bloodtype == "A" || bloodtype == "B" || bloodtype == "O" || bloodtype == "AB"
+    requires size>0
+    ensures shadow == []
+    ensures fresh(list)
+    ensures ValidSort();
     ensures ValidBT()
     modifies this
     {
         bloodType := bloodtype;
         lowest := critical;
         quantity := 0;
-        a := new BloodBags[1];
+        list := new BloodBags[size];
+        first, last, shadow := 0, 0, [];
         footprint := {this};
     }
 
@@ -41,8 +53,8 @@ class BloodType
     ensures ValidBT()
     modifies this
     {
-        //var node:BloodBags<int, string> := Node(ID, expDate, arvDate, newBloodType, temp1);
-        //temp1 := node;
+        var node:BloodBags<int, string> := Leaf(ID, expDate, arvDate, newBloodType);
+        
     }
 
 }
