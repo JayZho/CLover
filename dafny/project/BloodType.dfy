@@ -1,5 +1,5 @@
 // The datatype to store the valuable information of ID, expirayDate, arrivalDate of the bloodBag (in that order)
-// Which are int while the last variable C is the bloodtype string value
+// Which are int(B) while the last variable is the bloodtype string(C) value
 datatype BloodBags<B, C> = Leaf(B, B, B, C) 
 
 class BloodType 
@@ -8,16 +8,17 @@ class BloodType
     var bloodType: string;
     var lowest: int;
     var quantity: int;
+    // The array of BloodBags
     var list : array<BloodBags<int, string>>
     var first: int, last: int; // indexes in list[]
     ghost var shadow: seq<BloodBags<int, string>>;
-
+    // VERFY THE PUSH AND PULL ALGORITHM
     predicate ValidSort()
     reads this, this.list
     {
         list!=null && list.Length!=0 && 0<=first<=last<=list.Length //&& shadow==list[first..last] 
     }
-
+    // VERFIES THE CONCRETE VALUES OF THE CLASS
     predicate ValidBT()
     reads this, this.list
     {
@@ -27,7 +28,7 @@ class BloodType
         (bloodType == "A" || bloodType == "B" || bloodType == "O" || bloodType == "AB") &&
         list != null
     }
-    
+    // COPMPLETE DONT NEED TO CHANGE
     constructor(bloodtype: string, critical: int, size: int)
     requires critical >= 0 
     requires bloodtype == "A" || bloodtype == "B" || bloodtype == "O" || bloodtype == "AB"
@@ -46,14 +47,14 @@ class BloodType
         first, last, shadow := 0, 0, [];
         footprint := {this};
     }
-
+    // COMPLETE: TOOK ME A BLOODY LONG TIME TO FIGURE THIS OUT LOLS
     method getList() returns(value: array<BloodBags<int, string>>)
     requires ValidBT()
     ensures value == list
     {
         value := list;
     }
-
+    // COMPLETE IT WORKS;  TESTED IT AS WELL
     method addBloodBag(data: BloodBags<int, string>) 
     requires ValidBT() && ValidSort()
     requires list != null
@@ -78,7 +79,7 @@ class BloodType
         list[last], last := data, last+1; 
         shadow := shadow + [data]; 
     }
-    
+    //NOT COMPLETE; VERFIES BUT VERY STUPID
     method removeBloodBag(donorID: int)
     requires ValidBT() && ValidSort()
     requires list != null
