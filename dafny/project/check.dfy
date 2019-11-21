@@ -1,35 +1,64 @@
-class Store // Dafny 2.3.0
+class Cell
+{ var data: int; }
+
+class Counter
 {
- ghost var footprint: set<object>;
- var x: int;
+    ghost var shadow: int;
+    ghost var footprint: set<object>;
+    var incs: Cell;
+    var decs: Cell;
 
- predicate Valid()
- reads this, footprint
- { this in footprint }
+    predicate Valid()
+    reads this;
+    {
+        {this, incs, decs} <= footprint &&
+        incs != decs && shadow == incs.data - decs.data
+    }
+    constructor()
+    ensures Valid();
+    ensures shadow == 0;
+    ensures fresh(footprint);
+    {
+        var temp1, temp2 := new Cell, new Cell;
+        temp1.data, temp2.data := 0, 0;
+        incs, decs := temp1, temp2;
+        shadow := 0;
+        footprint := {this, incs, decs};
+    } 
 
- constructor()
- ensures Valid()
- ensures x==0
- modifies this
- { x := 0; footprint := {this}; }
+    method Inc() modifies footprint;
+    requires Valid(); ensures Valid();
+    ensures shadow == old(shadow) + 1;
+    ensures fresh(footprint - old(footprint));
+    { 
+        incs.data := incs.data + 1;
+        shadow := shadow + 1; 
+    }
 
- method Sets(value: int) modifies this
- requires Valid(); ensures Valid()
- ensures x == value
- { x := value; }
- 
- method Gets() returns (value: int)
- requires Valid()
- ensures x == value
- { value := x; }
+    method Dec() modifies footprint;
+    requires Valid(); ensures Valid();
+    ensures shadow == old(shadow) - 1;
+    ensures fresh(footprint - old(footprint));
+    { 
+        decs.data := decs.data + 1;
+        shadow := shadow - 1; 
+    }
+
+    method GetCounter() returns (x: int)
+    requires Valid();
+    ensures x == shadow;
+    { x := incs.data - decs.data; }
 }
 
-method Verify() {
- var s := new Store();
- var i := s.Gets();
- assert i == 0; // verify init
- s.Sets(-12345);
- i := s.Gets();
- assert i == s.x == -12345;
- // verify the operations
+
+method Verification()
+{
+    var c := new Counter();
+    c.Inc();
+    c.Inc();
+    c.Dec();
+    c.Inc();
+    var i: int := c.GetCounter();
+    assert i == c.shadow == 2;
 }
+
