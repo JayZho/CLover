@@ -1,5 +1,5 @@
 // The datatype to store the valuable information of ID, expirayDate, arrivalDate of the bloodBag (in that order)
-datatype BloodBags<B, C> = Leaf(B, B, B, C) | Node(B, B, B, BloodBags<B, C>)
+datatype BloodBags<B, C> = Leaf(B, B, B, C) | Node(B, B, B, C, BloodBags<B, C>)
 
 class BloodType 
 {
@@ -32,18 +32,29 @@ class BloodType
         footprint := {this};
     }
 
-    method addBloodBag(ID: int, expDate: int, arvDate: int) returns(test: bool)
+    method getTemp1() returns(thing :BloodBags<int, string>)
     requires ValidBT()
+    ensures ValidBT()
+    ensures thing == temp1
+    {
+        thing := temp1;
+    }
+
+    method addBloodBag(ID: int, expDate: int, arvDate: int, newBloodType: string) 
+    requires ValidBT()
+    requires newBloodType == "A" || newBloodType == "B" || newBloodType == "O" || newBloodType == "AB"
     ensures ValidBT()
     modifies this
     {
-        var node:BloodBags<int> := Node(ID, expDate, arvDate, temp1);
+        var node:BloodBags<int, string> := Node(ID, expDate, arvDate, newBloodType, temp1);
         temp1 := node;
     }
 
 }
 
 method Main() {
-    var bloodyType := new BloodType();
-
+    var bloodyType := new BloodType("A", 15);
+    bloodyType.addBloodBag(1, 12, 13, "A");
+    var test := bloodyType.getTemp1();
+    print test, '\n';
 }
