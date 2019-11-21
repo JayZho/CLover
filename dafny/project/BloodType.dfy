@@ -48,6 +48,9 @@ class BloodType
         footprint := {this};
     }
     // COMPLETE: TOOK ME A BLOODY LONG TIME TO FIGURE THIS OUT LOLS
+    // MAIN PROBLEM IS THAT YOU FIRST HAVE TO write
+    //  var temp : array<BloodBags<int, string>> := bloodyType.getList(); in the main
+    // not just var temp := bloodyType.getList();
     method getList() returns(value: array<BloodBags<int, string>>)
     requires ValidBT()
     ensures value == list
