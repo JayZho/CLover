@@ -10,12 +10,22 @@ class BloodType:
         self._quantity = 0
         self._bloodBags = []
         self._critical = lowest
-    
-    def getType(self):
+
+    def getBloodType(self):
         return self._bloodType
+
+    def getBloodBags(self):
+        return self._bloodBags
 
     def getQuantity(self):
         return self._quantity
+
+    def getCritical(self):
+        return self._critical
+
+    def setBloodBags(self, bloodBags):
+        self._bloodBags = bloodBags
+        self._quantity = len(bloodBags)
 
 
     #takes in a BloodBag instance
@@ -29,31 +39,25 @@ class BloodType:
     def addBloodBag(self, bag):
         self._bloodBags.append(bag)
         self._quantity += 1
-    
+
     #removes all expired blood bags from '_bloodBags'
     def removeExpiredBlood(self):
-        removedBags = []
+        removedBags = 0
         for bloodBag in self._bloodBags:
             if(bloodBag.isExpired() == True):
-                removedBags.append(bloodBag)
+                removedBags += 1
                 self.removeBloodBag(bloodBag)
         return removedBags
 
 
     def checkCritical(self):
         return (self._quantity < self._critical)
-
-    
-    # Creates new blood bag, adds to list
-    def addIncomingBloodBag(self, donor, expire, arrival, origin):
-        bag = BloodBag(self._bloodType, donor, expire, arrival, origin)
-        self._bloodBags.append(bag)
     
     #using selection sort
     def getSortedBags(self, start, end):
         toSort = []
         for bag in self._bloodBags: #grab bags in date range
-            if(start <= bag.getExpiryDate <= end):
+            if(start <= bag.getExpiryDate() <= end):
                 toSort.append(bag)
 
         count = len(toSort)
@@ -61,13 +65,17 @@ class BloodType:
         earliest = end
         while(count > 0):
             for each in toSort:
-                if (each.getExpiryDate <= earliest):
+                if (each.getExpiryDate() <= earliest):
                     selected = each
-                    earliest = each.getExpiryDate
+                    earliest = each.getExpiryDate()
             newList.append(selected)
             count -= 1
 
-        return newList
-        
-            
+        return newList           
+
+    # Creates new blood bag, adds to list
+    def addIncomingBloodBag(self, bloodId, donor, expire, arrival, origin):
+        bag = BloodBag(bloodId, self._bloodType, donor, expire, arrival, origin)
+        self.addBloodBag(bag)
+        return bag
 

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="eng">
+	<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- material icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Font Awesome Icon Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<style>
+        html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+
+		/* table, th, td {
+			border: 1px solid black;
+			border-collapse: collapse;
+		} */
+        .checked {
+            color: orange;
+        }
+        .bg-1 {
+        background-color: #464e6b; /* Dark Blue */
+        color: #ffffff;
+        }
+        div.login_style {
+            width:500px;
+            margin: auto;
+        }
+        .login_head{
+            padding-top: 10%;
+        }
+        div.search_style {
+            width:500px;
+            margin; auto;
+        }
+        .search_head{
+            padding-top: 10%;
+        }
+        .slide {
+        width: 25%;
+        }
+        .footer {
+        position: fixed;
+        left: 0;
+        padding-top: 10px;
+        bottom: 0;
+        width: 100%;
+        color: white;
+        text-align: center;
+        }
+    </style>
+    <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  
+            <!-- <span class="w3-bar-item w3-right">Logo</span> -->
+            <a href="/vampire_dashboard" class="w3-bar-item w3-button w3-hover-text-light-grey w3-left"> Home</a>
+            <form action="/" method="post">
+              <button class="w3-bar-item w3-button w3-hover-text-light-grey w3-right" type="submit"> Sign out</button>
+            </form>
+          </div>
+		<h1 class="display-4 text-center login_head"> Add Blood Bag </h1>
+	</head>
+	<body class="text-center">
+        <h4 style="color: blue;">
+        {% if complete %}
+            Valid blood details, added successfully.
+        {% else %}
+            {% if errmsg %}
+                Please try again!<br>
+                {{errmsg}}
+            {% endif %}
+        {% endif %}
+        </h4>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+		<div style="padding: 50px">
+        <form method="post">
+            <div class="form-group text-center">
+                <label for="bloodId">Blood ID:</label>
+                <input type="number" class="form-control" size="50" name="bloodId" id="bloodId" placeholder="Blood Bag ID" required>
+            </div>
+            <!-- <div class="form-group text-center">
+                <label for="bloodType">Blood Type:</label>
+                <input type="text" class="form-control" size="50" name="bloodType" id="bloodType" placeholder="Blood Type" required>
+            </div> -->
+            <div class="form-group text-center">
+                <label for="bloodType">Blood Type:</label>
+                <select class="form-control" id="bloodType" name="bloodType">
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="O">O</option>
+                    <option value="AB">AB</option>
+                </select>
+            </div>
+            <div class="form-group text-center">
+                <label for="donorId">Donor ID:</label>
+                <input type="number" class="form-control" size="50" name="donorId" id="donorId" placeholder="Donor ID" required>
+            </div>
+            <div class="form-group text-center">
+                <label for="expire">Expiry Date:</label>
+                <input type="date" class="form-control" size="50" name="expire" id="expire" placeholder="" required>
+            </div>
+            <!-- <div class="form-group text-center">
+                <label for="arrival">Arrival Date:</label>
+                <input type="date" class="form-control" size="50" name="arrival" id="arrival" placeholder="" required>
+            </div> -->
+            <div class="form-group text-center">
+                <label for="origin">Origin Medical Facility ID:</label>
+                <input type="number" class="form-control" size="50" name="origin" id="origin"placeholder="Origin Medical Facility" required>
+            </div>
+            </br>
+            <div class="form-group">
+                <input type=submit class="btn btn-primary" value=Add>
+            </div>
+        </form>
+        </div>
+	</body>
+    <div class="footer bg-dark">
+        <p>Vampire Blood Storage System</p>
+    </div>
+</html>

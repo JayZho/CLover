@@ -2,8 +2,6 @@
 <head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-
-
 /* Create two equal columns that floats next to each other */
 .column {
   float: left;
@@ -12,7 +10,6 @@
   font-size: 30;
   text-align: center;
 }
-
 .column2 {
   float: left;
   width: 18%;
@@ -20,7 +17,6 @@
   font-size: 15;
   text-align: center;
 }
-
 .column1 {
   float: left;
   width: 18%;
@@ -28,7 +24,6 @@
   font-size: 18;
   text-align: center;
 }
-
 /* Clear floats after the columns */
 .row:after {
   content: "";
@@ -44,11 +39,9 @@
   background-color: #f1f1f1;
   cursor: pointer;
 }
-
 .btn:hover {
   background-color: #ddd;
 }
-
 .btn.active {
   background-color: #666;
   color: white;
@@ -58,6 +51,14 @@
 <body>
 <h1 style="font-size: 55; text-align: center;">Vampire Blood Storage Overview</h1>
 
+<div>
+    <h3>Please specify an expiry date range:</h3>
+    <form action="/action_page.php">
+    Start date: <input type="date" name="startDay">
+    End date: <input type="date" name="endDay">
+    <button type="submit">View</button>
+    </form>
+</div>
 <div class="row">
   <div class="column" style="background-color:rgb(121, 5, 5);">
     <h2>A</h2>

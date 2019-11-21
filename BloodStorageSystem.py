@@ -1,17 +1,13 @@
 import datetime
 from datetime import date
-from MedicalFacility.py import MedicalFacility
-#from Inventory import Inventory
-from BloodType import BloodType
+from MedicalFacility import MedicalFacility
 
 class BloodStorageSystem:
 
 
-    def __init__(self, inventory):
-        self._medFacilities = [ MedicalFacility(A, 1, self)]
-        self._inventory = inventory
-        
-        self._requestLimit = 0
+    def __init__(self):
+        self._medFacilities = []
+        self._requestLimit = 100
 
         self._storageA = 0
         self._storageB = 0
@@ -19,81 +15,134 @@ class BloodStorageSystem:
         self._lowestLevelA = 0
         self._lowestLevelB = 0
         self._lowestLevelO = 0
-        self._bloodTypes[]
-        #self._bloodTypes[]
-       
 
+        self._bloodTypes = []
+
+    def addMedFacility(self, medFacility):
+        self._medFacilities.append(medFacility)
 
     def handleRequest(self, request):
-        blodType = request.getType()
+        type = request.getType()
         amount = request.getAmount()
 
+
         #checking if they are requesting too much blood
-        if amount > self._requestLimit:
-            self.requestTooMuch()
 
         if type == 'A':
-            amountLeft = self._storageA - amount
-            if amountLeft < self._lowestLevelA:
-                amount = self._storageA - self._lowestLevelA
+            bloodType = self._bloodTypes[0]
 
         elif type == 'B':
-            amountLeft = self._storageB - amount
-            if amountLeft < self._lowestLevelB:
-                amount = self._storageB - self._lowestLevelB
+            bloodType = self._bloodTypes[1]
+
+        elif type == 'AB':
+            bloodType = self._bloodTypes[2]
 
         elif type == 'O':
-            amountLeft = self._storageO - amount
-            if amountLeft < self._lowestLevelO:
-                amount = self._storageO - self._lowestLevelO
+            bloodType = self._bloodTypes[3]
+
+
+        originalQ = bloodType.getQuantity()
+
+        if amount < 0 or amount > self._requestLimit :
+            print("request rejected")
+            result = "error"
+            return result
+
+        flag = 0
+        if (bloodType.getQuantity() - amount) < bloodType.getCritical():
+            amount = bloodType.getQuantity() - bloodType.getCritical()
+            flag = 1
 
 
         #read csv file or use a list of blood
-        bloodBags = []
+        bloodBags = bloodType.getBloodBags()
         #sort the blood bags based on expiry dates
         #implement the sort algorithm instead of using the sort function
-        sortedBloodBags = sort(bloodBags)
+        sortedBloodBags = self.bubbleSort(bloodBags)
         #suppose we want to remove 10 bags
         toSendList = sortedBloodBags[:amount]
         #update our database
-        bloodBags = sortedBloodBags[amount:]
-        
+        bloodType.setBloodBags(sortedBloodBags[amount:])
+
+        currentQ = bloodType.getQuantity()
+        if flag == 1 and originalQ > currentQ:
+            return "partial"
+
+        if flag == 1 and originalQ == currentQ:
+            return "nofulfill"
 
 
+    def getAllBags(self, whichType):
+        for eachType in self._bloodTypes:
+            if eachType.getBloodType() == whichType:
+                return eachType.getBloodBags()
+
+    def getSortedBags(self, start, end, whichType):
+        for eachType in self._bloodTypes:
+            if eachType.getBloodType() == whichType:
+                return eachType.getSortedBags(start, end)
 
 
-    def requestTooMuch():
-        pass
+    def getQuantity(self, whichType):
+        for eachType in self._bloodTypes:
+            if eachType.getBloodType() == whichType:
+                return eachType.getQuantity()
+
+
+    def bubbleSort(self, bloodBags):
+        i = len(bloodBags) - 1
+        while (i > 0):
+            j = 0
+            while ( j < i):
+                if (bloodBags[j].getExpiryDate() > bloodBags[j+1].getExpiryDate()):
+                    temporary = bloodBags[j]
+                    bloodBags[j] = bloodBags[j+1]
+                    bloodBags[j+1] = temporary
+                j += 1
+            i -= 1
+
+        return bloodBags
+
+    def requestTooMuch(self):
+        return render_template('failure.html')
 
 
     def addBloodType(self, bloodType):
         self._bloodTypes.append(bloodType)
 
+    def getMFs(self):
+        return self._medFacilities
+
     def getBloodTypes(self):
         return self._bloodTypes
 
     def giveWarning(self, blood):
-        print("Storage of type ", blood, " is below critical!")
+        return ("Storage of type ", blood, " is below critical!")
 
     #check and remove expired blood bags
-    def checkExpriedBlood(self):
+    def checkExpiredBlood(self):
+        types = {}
         for bloodType in self._bloodTypes:
-            bloodType.removeExpiredBlood()
-
+            number = bloodType.removeExpiredBlood()
+            types[bloodType] = number
+        return types
 
     def checkCritical(self):
+        crits = []
         for bloodType in self._bloodTypes:
-            if(bloodType.checkCritical):
-                self.giveWarning(bloodType.getType())
-    
+            if(bloodType.checkCritical() == True):
+                crits.append(self.giveWarning(bloodType.getBloodType()))
+        return crits
+
     # Add incoming blood bag to inventory
-    def addIncomingBlood(self, bloodType, donor, expire, arrival, origin):
+    def addIncomingBlood(self, bloodId, bloodType, donor, expire, arrival, origin):
         # TODO Parse input to check for correctness
+        bloodBag = None
 
         # Adds blood to system
-        self._inventory.addIncomingBloodBag(bloodType, donor, expire, arrival, origin)
-
-    # Show the amount of blood within storage
-    def showStorageBlood(self, startDate, endDate):
-        for bloodBags in self.getBloodTypes:
-            if ((startDate < bloodBags.expire) && (endDate < bloodBags.expire)):
+        for bType in self._bloodTypes:
+            # Equals correct blood type, add blood
+            if bloodType == bType.getBloodType():
+                bloodBag = bType.addIncomingBloodBag(bloodId, donor, expire, arrival, origin)
+                break
+        return bloodBag
