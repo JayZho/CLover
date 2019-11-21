@@ -9,7 +9,7 @@ class Counter
     var decs: Cell;
 
     predicate Valid()
-    reads this;
+    reads this, footprint;
     {
         {this, incs, decs} <= footprint &&
         incs != decs && shadow == incs.data - decs.data

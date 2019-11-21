@@ -8,7 +8,7 @@ class BloodType
     var lowest: int;
     var quantity: int;
     var temp1:BloodBags<int, string>; 
-    var temp2:BloodBags<int, string>; 
+    var a : array<BloodBags<int, string>>
 
     predicate ValidBT()
     reads this
@@ -16,7 +16,8 @@ class BloodType
         this in footprint &&
         lowest >= 0 &&
         quantity >= 0 &&
-        (bloodType == "A" || bloodType == "B" || bloodType == "O" || bloodType == "AB") 
+        (bloodType == "A" || bloodType == "B" || bloodType == "O" || bloodType == "AB") &&
+        a.Length >= 0 
     }
     
     constructor(bloodtype: string, critical: int)
@@ -57,4 +58,8 @@ method Main() {
     bloodyType.addBloodBag(1, 12, 13, "A");
     var test := bloodyType.getTemp1();
     print test, '\n';
+    bloodyType.addBloodBag(2, 12, 13, "B");
+    var test2 := bloodyType.getTemp1();
+    print test2, '\n';
+    
 }
