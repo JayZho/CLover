@@ -15,7 +15,7 @@ class BloodType
     predicate ValidSort()
     reads this, this.list
     {
-        list!=null && list.Length!=0 && 0<=first<=last<=list.Length && shadow==list[first..last] 
+        list!=null && list.Length!=0 && 0<=first<=last<=list.Length //&& shadow==list[first..last] 
     }
 
     predicate ValidBT()
@@ -34,14 +34,15 @@ class BloodType
     requires size>0
     ensures shadow == []
     ensures fresh(list)
-    ensures ValidSort();
-    ensures ValidBT()
+    ensures ValidSort() && ValidBT()
+    ensures list.Length == size
     modifies this
     {
         bloodType := bloodtype;
         lowest := critical;
         quantity := 0;
-        list := new BloodBags[size];
+        var temp : array<BloodBags<int, string>> := new BloodBags[size];
+        list := temp;
         first, last, shadow := 0, 0, [];
         footprint := {this};
     }
@@ -55,13 +56,15 @@ class BloodType
 
     method addBloodBag(data: BloodBags<int, string>) 
     requires ValidBT() && ValidSort()
-    requires list != null;
+    requires list != null
+    requires list.Length > 0
     ensures shadow == old(shadow) + [data] 
     ensures |shadow| == |old(shadow)| + 1
     ensures if old(last) == old(list.Length) then fresh(list) else list == old(list)
     ensures ValidBT() && ValidSort()
     modifies this, this.list
     {
+        
         if (last == list.Length) {
             var b:= new BloodBags[list.Length]; 
             if (first==0) { 
@@ -74,28 +77,46 @@ class BloodType
         }
         list[last], last := data, last+1; 
         shadow := shadow + [data]; 
-        
     }
+    
+    method removeBloodBag(donorID: int)
+    requires ValidBT() && ValidSort()
+    requires list != null
+    requires list.Length > 0
+    //ensures fresh(shadow - old(shadow))
+    //ensures |shadow| == |old(shadow)| - 1
+    ensures ValidBT() && ValidSort()
+    modifies this, this.list
+    {
+        var counter: int;
+        counter := 0;
+        while (counter < list.Length) 
+        invariant true
+        {
+            var next : BloodBags<int, string> := list[counter];
+            match next
+            {
+                case Leaf(a, b, c, d) => if a == donorID {next := Leaf(0, 0, 0, " ");}
+            }
+            
+            counter := counter+1;
+        }
+    }
+    
 
 }
 
 method Main() {
-    /*
-    var a : array<BloodBags<int, string>> := new BloodBags[4];
-    var Leaf1:BloodBags<int, string> := Leaf(1,1,1,"A");
-    var Leaf2:BloodBags<int, string> := Leaf(2,2,2,"B");
-    a[0], a[1] := Leaf1, Leaf2;
-    print a[0], a[1], '\n';
-    var Leaf3:BloodBags<int, string> := a[0];
-    print Leaf3, '\n';
-    */
     var bloodyType := new BloodType("A", 15, 10);
     var Leaf1:BloodBags<int, string> := Leaf(1,1,1,"A");
     var Leaf2:BloodBags<int, string> := Leaf(2,2,2,"B");
-    //bloodyType.addBloodBag(Leaf1);
-    var me := bloodyType.getList();
-   // assert me[0] == Leaf1;
-    print me, '\n';
+    var temp : array<BloodBags<int, string>> := bloodyType.getList();
+    bloodyType.addBloodBag(Leaf1);
+    bloodyType.addBloodBag(Leaf2);
     
-    
+    var t : BloodBags<int, string> := temp[0];
+
+    print temp.Length, '\n';
+    print temp[0], ' ', Leaf1, ' ', temp[1], ' ', Leaf2, '\n';
+       
 }

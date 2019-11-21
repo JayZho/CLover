@@ -10,5 +10,14 @@ method Main(){
     var Leaf1:BloodType<int, string> := Leaf(1, 2, 3, "A");
     var t1:BloodType<int, string> := Node(2, 7, 5, "B", Leaf1);
     Print(t1); print '\n'; 
+    match Leaf1
+    case Leaf(a, b, c, d) =>
+    {
+        if a == 1
+        {
+            Leaf1 := Leaf(0, 0, 0, " ");
+        }
+    }
+    print Leaf1, '\n';
 
 }
