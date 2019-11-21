@@ -13,13 +13,13 @@ class BloodType
     ghost var shadow: seq<BloodBags<int, string>>;
 
     predicate ValidSort()
-    reads this, list
+    reads this, this.list
     {
         list!=null && list.Length!=0 && 0<=first<=last<=list.Length && shadow==list[first..last] 
     }
 
     predicate ValidBT()
-    reads this, list
+    reads this, this.list
     {
         this in footprint &&
         lowest >= 0 &&
@@ -46,20 +46,41 @@ class BloodType
         footprint := {this};
     }
 
-
-    method addBloodBag(ID: int, expDate: int, arvDate: int, newBloodType: string) 
+    method getList() returns(value: array<BloodBags<int, string>>)
     requires ValidBT()
-    requires newBloodType == "A" || newBloodType == "B" || newBloodType == "O" || newBloodType == "AB"
-    ensures ValidBT()
-    modifies this
+    ensures value == list
     {
-        var node:BloodBags<int, string> := Leaf(ID, expDate, arvDate, newBloodType);
+        value := list;
+    }
+
+    method addBloodBag(data: BloodBags<int, string>) 
+    requires ValidBT() && ValidSort()
+    requires list != null;
+    ensures shadow == old(shadow) + [data] 
+    ensures |shadow| == |old(shadow)| + 1
+    ensures if old(last) == old(list.Length) then fresh(list) else list == old(list)
+    ensures ValidBT() && ValidSort()
+    modifies this, this.list
+    {
+        if (last == list.Length) {
+            var b:= new BloodBags[list.Length]; 
+            if (first==0) { 
+                b:= new BloodBags[2*list.Length]; 
+            } 
+            forall (i | 0<=i<last-first) { 
+                b[i]:= list[first+i]; 
+            }
+            list, first, last:= b, 0, last-first; 
+        }
+        list[last], last := data, last+1; 
+        shadow := shadow + [data]; 
         
     }
 
 }
 
 method Main() {
+    /*
     var a : array<BloodBags<int, string>> := new BloodBags[4];
     var Leaf1:BloodBags<int, string> := Leaf(1,1,1,"A");
     var Leaf2:BloodBags<int, string> := Leaf(2,2,2,"B");
@@ -67,7 +88,14 @@ method Main() {
     print a[0], a[1], '\n';
     var Leaf3:BloodBags<int, string> := a[0];
     print Leaf3, '\n';
-    //var bloodyType := new BloodType("A", 15);
+    */
+    var bloodyType := new BloodType("A", 15, 10);
+    var Leaf1:BloodBags<int, string> := Leaf(1,1,1,"A");
+    var Leaf2:BloodBags<int, string> := Leaf(2,2,2,"B");
+    //bloodyType.addBloodBag(Leaf1);
+    var me := bloodyType.getList();
+   // assert me[0] == Leaf1;
+    print me, '\n';
     
     
 }
