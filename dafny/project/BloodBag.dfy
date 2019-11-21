@@ -8,7 +8,7 @@ class BloodBag
     var arrivalDate: int;
     
     predicate ValidBB()
-    reads this, footprint
+    reads this
     {
         this in footprint &&
         id >= 0 &&
@@ -19,10 +19,8 @@ class BloodBag
     }
 
     constructor()
-    requires ValidBB()
     ensures ValidBB()
-    ensures fresh(footprint - old(footprint))
-    modifies this, footprint
+    modifies this
     {
         id := 0;
         bloodTypeName := "";
@@ -39,9 +37,9 @@ class BloodBag
     {
         value := bloodTypeName;
     }
-    
+
     method setType(BT: string)
-    modifies this, footprint
+    modifies this
     requires ValidBB()
     requires BT == "A" || BT == "B" || BT == "O" || BT == "AB"
     ensures fresh(footprint - old(footprint));
@@ -50,7 +48,7 @@ class BloodBag
     {
         bloodTypeName := BT;
     }
-    
+ 
     method getDonor() returns(value: int)
     requires ValidBB() 
     ensures ValidBB()
@@ -65,11 +63,12 @@ class BloodBag
     ensures ValidBB()
     ensures fresh(footprint - old(footprint))
     ensures donorId == newDonorId
-    modifies this, footprint
+    modifies this
     {
         donorId := newDonorId;
     }
 
+    
     method getArrivalDate() returns(value: int)
     requires ValidBB() 
     ensures ValidBB()
@@ -84,7 +83,7 @@ class BloodBag
     ensures ValidBB()
     ensures arrivalDate == newArrivalDate
     ensures fresh(footprint - old(footprint))
-    modifies this, footprint
+    modifies this
     {
         arrivalDate := newArrivalDate;
     }
@@ -103,7 +102,7 @@ class BloodBag
     ensures ValidBB()
     ensures expirayDate == newExpirayDate
     ensures fresh(footprint - old(footprint))
-    modifies this, footprint
+    modifies this
     {
         expirayDate := newExpirayDate;
     }
@@ -112,15 +111,35 @@ class BloodBag
     requires ValidBB()
     requires currentDate >= 0
     ensures ValidBB()
-    ensures expirayDate <= currentDate ==> expired == true
+    ensures expirayDate <= currentDate ==> expired == false
     ensures fresh(footprint - old(footprint))
-    modifies this, footprint
+    modifies this
     {
         if (expirayDate <= currentDate) {
-            expired := false;
+            expired := true;
         }
-        expired := true;
+        expired := false;
     }
+}
+
+method Main(){
+    var bloodyBag := new BloodBag();
+    var bt :=  bloodyBag.getType();
+    print bt;
+    bloodyBag.setType("A");
+    var bt1 :=  bloodyBag.getType();
+    print bt1, '\n';
+    bloodyBag.setDonor(21);
+    var bt2 :=  bloodyBag.getDonor();
+    print bt2, '\n';
+    bloodyBag.setArrivalDate(5);
+    var bt3 :=  bloodyBag.getArrivalDate();
+    print bt3, '\n';
+    bloodyBag.setExpirayDate(10);
+    var bt4 :=  bloodyBag.getExpirayDate();
+    print bt4, '\n';
+    var bt5 :=  bloodyBag.isExpiredDate(7);
+    print bt5, '\n';
 }
 
 
