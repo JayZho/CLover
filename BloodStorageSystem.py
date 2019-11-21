@@ -117,7 +117,7 @@ class BloodStorageSystem:
         return self._bloodTypes
 
     def giveWarning(self, blood):
-        return ("Storage of type ", blood, " is below critical!")
+        return ("Storage of Type {} is BELOW CRITICAL !".format(blood))
 
     #check and remove expired blood bags
     def checkExpiredBlood(self):

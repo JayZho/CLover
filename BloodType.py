@@ -51,7 +51,7 @@ class BloodType:
 
 
     def checkCritical(self):
-        return (self._quantity < self._critical)
+        return (self._quantity <= self._critical)
     
     #using selection sort
     def getSortedBags(self, start, end):
