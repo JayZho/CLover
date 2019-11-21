@@ -1,5 +1,6 @@
 // The datatype to store the valuable information of ID, expirayDate, arrivalDate of the bloodBag (in that order)
-datatype BloodBags<B, C> = Leaf(B, B, B, C) | Node(B, B, B, C, BloodBags<B, C>)
+// Which are int while the last variable C is the bloodtype string value
+datatype BloodBags<B, C> = Leaf(B, B, B, C) 
 
 class BloodType 
 {
@@ -7,8 +8,8 @@ class BloodType
     var bloodType: string;
     var lowest: int;
     var quantity: int;
-    var temp1:BloodBags<int, string>; 
     var a : array<BloodBags<int, string>>
+    //ghost var shadow: seq<Data>;
 
     predicate ValidBT()
     reads this
@@ -17,7 +18,7 @@ class BloodType
         lowest >= 0 &&
         quantity >= 0 &&
         (bloodType == "A" || bloodType == "B" || bloodType == "O" || bloodType == "AB") &&
-        a.Length >= 0 
+        a != null
     }
     
     constructor(bloodtype: string, critical: int)
@@ -29,17 +30,10 @@ class BloodType
         bloodType := bloodtype;
         lowest := critical;
         quantity := 0;
-        temp1 := Leaf(0, 0, 0, " ");
+        a := new BloodBags[1];
         footprint := {this};
     }
 
-    method getTemp1() returns(thing :BloodBags<int, string>)
-    requires ValidBT()
-    ensures ValidBT()
-    ensures thing == temp1
-    {
-        thing := temp1;
-    }
 
     method addBloodBag(ID: int, expDate: int, arvDate: int, newBloodType: string) 
     requires ValidBT()
@@ -47,19 +41,21 @@ class BloodType
     ensures ValidBT()
     modifies this
     {
-        var node:BloodBags<int, string> := Node(ID, expDate, arvDate, newBloodType, temp1);
-        temp1 := node;
+        //var node:BloodBags<int, string> := Node(ID, expDate, arvDate, newBloodType, temp1);
+        //temp1 := node;
     }
 
 }
 
 method Main() {
-    var bloodyType := new BloodType("A", 15);
-    bloodyType.addBloodBag(1, 12, 13, "A");
-    var test := bloodyType.getTemp1();
-    print test, '\n';
-    bloodyType.addBloodBag(2, 12, 13, "B");
-    var test2 := bloodyType.getTemp1();
-    print test2, '\n';
+    var a : array<BloodBags<int, string>> := new BloodBags[4];
+    var Leaf1:BloodBags<int, string> := Leaf(1,1,1,"A");
+    var Leaf2:BloodBags<int, string> := Leaf(2,2,2,"B");
+    a[0], a[1] := Leaf1, Leaf2;
+    print a[0], a[1], '\n';
+    var Leaf3:BloodBags<int, string> := a[0];
+    print Leaf3, '\n';
+    //var bloodyType := new BloodType("A", 15);
+    
     
 }
