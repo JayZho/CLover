@@ -12,23 +12,7 @@ class BloodType
     var list : array<BloodBags<int, string>>
     var first: int, last: int; // indexes in list[]
     ghost var shadow: seq<BloodBags<int, string>>;
-    // VERFY THE PUSH AND PULL ALGORITHM
-    predicate ValidSort()
-    reads this, this.list
-    {
-        list!=null && list.Length!=0 && 0<=first<=last<=list.Length //&& shadow==list[first..last] 
-    }
-    // VERFIES THE CONCRETE VALUES OF THE CLASS
-    predicate ValidBT()
-    reads this, this.list
-    {
-        this in footprint &&
-        lowest >= 0 &&
-        quantity >= 0 &&
-        (bloodType == "A" || bloodType == "B" || bloodType == "O" || bloodType == "AB") &&
-        list != null
-    }
-    // COPMPLETE DONT NEED TO CHANGE
+    
     constructor(bloodtype: string, critical: int, size: int)
     requires critical >= 0 
     requires bloodtype == "A" || bloodtype == "B" || bloodtype == "O" || bloodtype == "AB"
@@ -57,7 +41,7 @@ class BloodType
     {
         value := list;
     }
-    // COMPLETE IT WORKS;  TESTED IT AS WELL
+    
     method addBloodBag(data: BloodBags<int, string>) 
     requires ValidBT() && ValidSort()
     requires list != null
@@ -82,29 +66,67 @@ class BloodType
         list[last], last := data, last+1; 
         shadow := shadow + [data]; 
     }
+    // VERFY THE PUSH AND PULL ALGORITHM
+    predicate ValidSort()
+    reads this, this.list
+    {
+        list!=null && list.Length!=0 && 0<=first<=last<=list.Length && shadow==list[first..last] 
+    }
+    // VERFIES THE CONCRETE VALUES OF THE CLASS
+    predicate ValidBT()
+    reads this, this.list
+    {
+        lowest >= 0 &&
+        quantity >= 0 &&
+        (bloodType == "A" || bloodType == "B" || bloodType == "O" || bloodType == "AB") 
+        //list != null
+    }
     //NOT COMPLETE; VERFIES BUT VERY STUPID
-    method removeBloodBag(donorID: int)
+    method removeBloodBag(bagID: int)
     requires ValidBT() && ValidSort()
     requires list != null
     requires list.Length > 0
-    //ensures fresh(shadow - old(shadow))
+    requires shadow != []
+    //ensures 
     //ensures |shadow| == |old(shadow)| - 1
-    ensures ValidBT() && ValidSort()
+    //ensures ValidSort()
+    ensures list != null
     modifies this, this.list
     {
-        var counter: int;
-        counter := 0;
-        while (counter < list.Length) 
-        invariant true
+        var length := list.Length;
+        var newList : array<BloodBags<int, string>> := new BloodBags[length];
+        /*
+        var Leaf:BloodBags<int, string> := Leaf(0,0,0," ");
+        var tick := 0;
+        var length := list.Length;
+        while (tick != length) 
+        invariant 0<= tick <= length
+        invariant newList != null && newList.Length > 0;
         {
+            //var Leaf:BloodBags<int, string> := Leaf(0,0,0," ");
+            newList[tick] := Leaf;
+            assert newList[tick] == Leaf;
+            tick := tick + 1;
+            print tick, ' ', newList[1], ' ',newList.Length, '\n';
+        }
+        assert tick == length;
+        assert newList[tick] == Leaf;
+        */
+        var counter: int, index: int;
+        counter, index := 0, 0;
+        while ((counter < last))
+        invariant newList != null && newList.Length > 0;
+        {   
             var next : BloodBags<int, string> := list[counter];
             match next
             {
-                case Leaf(a, b, c, d) => if a == donorID {next := Leaf(0, 0, 0, " ");}
+                case Leaf(a, b, c, d) => if a != bagID {}//temp1[index]:=next; index := index+1;}
             }
-            
+            //newList[index]:=next;
             counter := counter+1;
         }
+        list, last := newList, 9;
+        
     }
     
 
@@ -114,13 +136,15 @@ method Main() {
     var bloodyType := new BloodType("A", 15, 10);
     var Leaf1:BloodBags<int, string> := Leaf(1,1,1,"A");
     var Leaf2:BloodBags<int, string> := Leaf(2,2,2,"B");
+    var Leaf3:BloodBags<int, string> := Leaf(3,3,3,"O");
     var temp : array<BloodBags<int, string>> := bloodyType.getList();
     bloodyType.addBloodBag(Leaf1);
     bloodyType.addBloodBag(Leaf2);
+    bloodyType.removeBloodBag(1);
     
-    var t : BloodBags<int, string> := temp[0];
+    temp[2]:=Leaf3;
 
     print temp.Length, '\n';
-    print temp[0], ' ', Leaf1, ' ', temp[1], ' ', Leaf2, '\n';
+    print temp[0], ' ', Leaf1, ' ', temp[1], ' ', Leaf2, temp[2], ' ', Leaf3, '\n';
        
 }
